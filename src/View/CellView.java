@@ -15,28 +15,37 @@ import javax.swing.border.LineBorder;
 public class CellView extends JButton implements ActionListener {
     
     private int x, y;
+    
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	public CellView(int x, int y) {
     	this.x=x;
     	this.y=y;
     	setBorder(new LineBorder(Color.GRAY));
         setBackground(null);
-    	this.addActionListener(this);
-    	
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	colorCell();
-            	 AbstractButton btnSource = ((AbstractButton)e.getSource());
-            	 btnSource.addActionListener(actionListener);
-            	//actionControllerTHing()
-            }
-        });
+//    	this.addActionListener(this);
+//    	
+//        addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//            	colorCell();
+//            	 AbstractButton btnSource = ((AbstractButton)e.getSource());
+//            	 btnSource.addActionListener(actionListener);
+//            	//actionControllerTHing()
+//            }
+//        });
         
     }
-	public void printThings(ActionListener listenForWhatever) {
-		this.addActionListener(listenForWhatever);
-		//System.out.println(getX() + " " + getY());
-	}
+//	public void printThings(ActionListener listenForWhatever) {
+//		this.addActionListener(listenForWhatever);
+//		//System.out.println(getX() + " " + getY());
+//	}
 
     protected void colorCell() {
         if (getBackground() != Color.DARK_GRAY) {
@@ -54,6 +63,7 @@ public class CellView extends JButton implements ActionListener {
     public int getX() {
 		return x;
 	}
+    
 
 	public int getY() {
 		return y;

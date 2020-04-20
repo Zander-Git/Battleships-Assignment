@@ -2,6 +2,8 @@ package View;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
@@ -15,6 +17,7 @@ public class BoardView extends JPanel{
 	//private static final long serialVersionUID = 1L;
 	public BoardView() {
 		addSquares();
+		
 	}
 	
 private void addSquares() {
@@ -26,7 +29,22 @@ private void addSquares() {
             for (int x = 0; x < 10; x++) {
                 gbc.gridx = x;
                 cells[x][y] = new CellView(x,y);
-                add(cells[x][y], gbc);                
+                add(cells[x][y], gbc);     
+                
+                cells[x][y].setX(x);
+    			cells[x][y].setY(y);
+                                
+                cells[x][y].addActionListener(new ActionListener() {
+                	
+
+                	@Override
+                	public void actionPerformed(ActionEvent e) {
+                			
+                			
+
+                	}
+                	});
+
             }
     	}    	
     }
@@ -34,6 +52,11 @@ private void addSquares() {
 public CellView getCell(int x, int y) {
     return cells[x][y];
 }
+public  void test() {
+	
+	System.out.println(getCell(2,2).getX());
+}
+
 //
 //public void printThings(PrintListener printListener) {
 //	// TODO Auto-generated method stub
