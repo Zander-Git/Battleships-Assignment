@@ -1,48 +1,46 @@
 package View;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import Model.BoardModel;
 
 public class MainUi {
 
 	JFrame frame;  
-	private static final int GRIDSIZE = 10;
+	ClientConfigPanelView configPanel;
+	ShipSelectionPanel selectPanel;
+	BoardView myBoard, yourBoard;
+	
 	private static final int SIZE = 500;
-	private Cell[][] cells;
-
-	private final ActionListener actionListener = actionEvent -> {
-		Object source = actionEvent.getSource();
-		handleCell((Cell) source);
-
-	};  
 
 	MainUi(){     
-		cells = new Cell[GRIDSIZE][GRIDSIZE];
 
 		frame=new JFrame();	        
-		JPanel rootPanel = new JPanel();
-		JPanel leftPanel = new JPanel();
-		JPanel yourPanel = new JPanel(new GridLayout(1, 0));
-		JPanel myPanel = new JPanel(new GridLayout(1, 0));	
-
+		JPanel rootPanel = new JPanel(new BorderLayout());
+		JPanel leftPanel = new JPanel(new GridLayout(1, 0));
+		JPanel rightPanel = new JPanel(new GridLayout(1, 0));
+	
+		selectPanel = new ShipSelectionPanel();
+		configPanel = new ClientConfigPanelView(this.frame);
+		
+//		myBoard = new BoardView(false);	
+		myBoard = new BoardView(false, selectPanel);	
+		yourBoard = new BoardView(false);
+		
+		
+	
 		frame = new JFrame("Battleships");
 		frame.setSize(SIZE, SIZE);
 		frame.setLayout(new BorderLayout());
-		initializeGrid(yourPanel, false);
-		initializeGrid(myPanel, true);
 
-		rootPanel.setLayout(new GridLayout(1, 2, 20, 0));
-
-		rootPanel.add(myPanel);
-		rootPanel.add(yourPanel, BorderLayout.NORTH); 
+		leftPanel.add(myBoard);
+		rightPanel.add(selectPanel);
+		
+		rootPanel.add(configPanel, BorderLayout.NORTH);
+		rootPanel.add(leftPanel, BorderLayout.WEST);
+		rootPanel.add(rightPanel, BorderLayout.EAST); 
 
 		frame.add(rootPanel);
 
@@ -51,35 +49,7 @@ public class MainUi {
 		this.frame.pack();
 		this.frame.setVisible(true);       
 
-
 	}  
-
-
-	private void handleCell(Cell source) {
-		source.colorCell();
-
-	}
-
-
-	private void initializeGrid(JPanel myPanel, boolean b) {
-		Container grid = new Container();
-		grid.setLayout(new GridLayout(GRIDSIZE, GRIDSIZE));
-
-		for (int row = 0; row < GRIDSIZE; row++) {
-			for (int col = 0; col < GRIDSIZE; col++) {
-				cells[row][col] = new Cell(row, col, actionListener);
-				grid.add(cells[row][col]);
-
-				if(b) {
-					cells[row][col].setEnabled(false);
-				}
-			}
-		}		
-		myPanel.add(grid, BorderLayout.CENTER);
-	}
-
-
-
 
 
 	public static void main(String[] args) {  

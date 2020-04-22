@@ -1,23 +1,20 @@
 package View;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-//import Controller.Controller.PrintListener;
-import Model.CellModel;
-
 public class BoardView extends JPanel{
+	
+	private static final long serialVersionUID = 1L;
 	Cell[][] cells=new Cell[10][10];
 	private int gridSize = 10;
 	private boolean ownBoard;
-
+	ShipSelectionPanel shipPanel;
+	
 	private final ActionListener actionListener = actionEvent -> {
         Object source = actionEvent.getSource();
             handleCell((Cell) source);
@@ -25,20 +22,34 @@ public class BoardView extends JPanel{
     };    
 
 	
-
-	//private static final long serialVersionUID = 1L;
 	public BoardView(boolean ownBoard) {
 		this.ownBoard = ownBoard;
-		addSquares(ownBoard);
+		addSquares();
+		
+	}
+	
+	public BoardView(boolean ownBoard, ShipSelectionPanel shipPanel) {
+		this.shipPanel = shipPanel;
+		this.ownBoard = ownBoard;
+		addSquares();
 		
 	}
 	
 private void handleCell(View.Cell source) {
-		// TODO Auto-generated method stub
-		
+//	source.colorCell();
+//	shipPanel.printBtnText();
+	
+	if (shipPanel.getSelectedButtonText() == "big") {
+		source.colorCell(Color.BLUE);
+	}else {
+		source.colorCell();
 	}
+	
+}
+		
+	
 
-private void addSquares(boolean isOwnBoard) {
+private void addSquares() {
     	
     Container grid = new Container();
     grid.setLayout(new GridLayout(gridSize, gridSize));
@@ -48,15 +59,15 @@ private void addSquares(boolean isOwnBoard) {
             cells[row][col] = new Cell(row, col, actionListener);
             grid.add(cells[row][col]);
 
-            if(isOwnBoard) {
+            if(ownBoard) {
             	cells[row][col].setEnabled(false);
             	
             }
         }
     }
-    //createMines();
-//    myPanel.add(grid, BorderLayout.CENTER);
-    //return grid;
+
+    this.add(grid);
+
 }  	
     
 

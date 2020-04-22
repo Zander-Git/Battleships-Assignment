@@ -9,7 +9,9 @@ import javax.swing.JButton;
 
 
 public class Cell extends JButton {
-    private final int row;
+
+	private static final long serialVersionUID = 1L;
+	private final int row;
 	private final int col;
     private       int value;
 //    private Ship ship;    
@@ -99,6 +101,11 @@ public class Cell extends JButton {
         }
     }
 
+    protected void colorCell(Color color) {
+            setBackground(color);
+        }
+    
+    
     public enum State {
         CONTAINS_SHIP, NO_SHIP, UNKNOWN
     }
