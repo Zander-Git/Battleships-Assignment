@@ -27,7 +27,7 @@ public class MainUi {
 		
 //		myBoard = new BoardView(false);	
 		myBoard = new BoardView(false, selectPanel);	
-		yourBoard = new BoardView(false);
+//		yourBoard = new BoardView(false);
 		
 		
 	

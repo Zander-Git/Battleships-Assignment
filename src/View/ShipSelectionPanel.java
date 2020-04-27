@@ -14,52 +14,84 @@ public class ShipSelectionPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
-    JRadioButton bigBoi, littleBoi;  
-    ButtonGroup shipGroup; 
+    JRadioButton airCarrierBtn, battleshipBtn, submarineBtn, destroyerBtn, patrolBtn,
+    verticalBtn, horizontalBtn;  
+    ButtonGroup shipGroup, orientaionGroup; 
     JLabel shipLbl; 
     JButton readyBtn; 
     
     public ShipSelectionPanel() {
     	
-    	bigBoi 		= new JRadioButton(); 
-    	littleBoi	= new JRadioButton(); 
+    	airCarrierBtn 		= new JRadioButton(); 
+    	battleshipBtn		= new JRadioButton(); 
+    	submarineBtn 		= new JRadioButton(); 
+    	destroyerBtn		= new JRadioButton(); 
+    	patrolBtn 			= new JRadioButton(); 
     	
+    	verticalBtn			= new JRadioButton(); 
+    	horizontalBtn 		= new JRadioButton(); 
+
     	readyBtn 	= new JButton("Ready?");
     	
     	shipGroup = new ButtonGroup();
+    	orientaionGroup = new ButtonGroup();
     	
-    	Box box1 = Box.createVerticalBox();
+    	Box radioBox = Box.createVerticalBox();
     	Box box2 = Box.createVerticalBox();
+    	Box oriBox = Box.createHorizontalBox();
          
     	shipLbl = new JLabel("Ships"); 
     	
-    	bigBoi.setText("big");
-    	littleBoi.setText("lil");
+    	airCarrierBtn.setText("aircraft carrier");
+    	battleshipBtn.setText("battleship");
+    	submarineBtn.setText("submarine");
+    	destroyerBtn.setText("destroyer");
+    	patrolBtn.setText("patrol boat");
     	
-    	bigBoi.setBounds(120, 30, 120, 50); 
-      	littleBoi.setBounds(250, 30, 80, 50);
+    	verticalBtn.setText("vertical");
+    	horizontalBtn.setText("horizontal");
+    	
+    	
+    	airCarrierBtn.setBounds(120, 30, 120, 50); 
+      	battleshipBtn.setBounds(250, 30, 80, 50);
       	shipLbl.setBounds(20, 30, 150, 50); 
       	
       	this.add(shipLbl);      	
-      	box1.add(bigBoi);
-      	box1.add(littleBoi);      	
-      	box2.add(readyBtn);
-      	bigBoi.setSelected(true);
-
-      	shipGroup.add(bigBoi);
-      	shipGroup.add(littleBoi);
+      	radioBox.add(airCarrierBtn);
+      	radioBox.add(battleshipBtn);
+      	radioBox.add(submarineBtn);
+      	radioBox.add(destroyerBtn);
+      	radioBox.add(patrolBtn);    	 	
+      	airCarrierBtn.setSelected(true);
       	
-      	this.add(box1);
+      	box2.add(readyBtn);      	
+      	
+      	oriBox.add(horizontalBtn);
+      	oriBox.add(verticalBtn);
+      	horizontalBtn.setSelected(true);
+
+      	shipGroup.add(airCarrierBtn);
+      	shipGroup.add(battleshipBtn);
+      	shipGroup.add(submarineBtn);
+      	shipGroup.add(destroyerBtn);
+      	shipGroup.add(patrolBtn);      	
+      	
+      	orientaionGroup.add(horizontalBtn);
+      	orientaionGroup.add(verticalBtn);
+      	
+      	this.add(radioBox);
       	this.add(box2);
+      	this.add(oriBox);
+      	
       	
     	
     }
     
     public void printBtnText() {
-    	System.out.println(getSelectedButtonText());
+    	System.out.println(getShipSelected());
     }
     
-    public String getSelectedButtonText() {
+    public String getShipSelected() {
         for (Enumeration<AbstractButton> buttons = shipGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
@@ -71,6 +103,24 @@ public class ShipSelectionPanel extends JPanel{
         return null;
     }
 	
-	
+    public boolean getOrientationSelected() {
+        for (Enumeration<AbstractButton> buttons = orientaionGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected() ) {
+                if(button.getText() == "horizontal") {
+                	return false;
+                }
+                else {
+                	return true;
+                }
+            }
+        }
+		return false; //fix this wierd thing
+
+
+
+    }
+	//some kind of controller class to set board model ship length, based on button name in ShipModel
 }
 

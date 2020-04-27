@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import Model.BoardModel;
 import Model.CellModel;
 import View.BoardView;
-import View.CellView;
+import View.Cell;
 
 public class Controller {    
 

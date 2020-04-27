@@ -7,71 +7,49 @@ import java.util.Objects;
 
 import javax.swing.JButton;
 
+import Model.Ship;
+
 
 public class Cell extends JButton {
 
 	private static final long serialVersionUID = 1L;
-	private final int row;
-	private final int col;
-    private       int value;
-//    private Ship ship;    
+	private final int row, col;
+    private Ship ship;
+	private State state;    
 
-	private State state;
+//	private State state;
 	
-	Cell(final int row, final int col,
+	public Cell(final int row, final int col,
          final ActionListener actionListener) {
         this.row = row;
         this.col = col;
-//        this.ship = null;
-        this.state = State.NO_SHIP;
+        this.ship = null;
+//        this.state = State.NO_SHIP;
         addActionListener(actionListener);
-        setText("");
+
     }
 
-    public int getRow() {
+	public int getRow() {
 		return row;
 	}
+
 
 	public int getCol() {
 		return col;
 	}
 
-    public State getState() {
-    	return state;
+
+    public Ship getShip() {
+    	return ship;
     }
-    public void setState(State state) {
-		this.state = state;
+    
+    public void setShip(Ship ship) {
+		this.ship = ship;
 	}
     
-//    public Ship getShip() {
-//    	return ship;
-//    }
-//    
-//    public void setShip(Ship ship) {
-//		this.ship = ship;
-//	}
-	
-    int getValue() {
-        return value;
+    public boolean isShip() {
+        return (ship != null);
     }
-
-    void setValue(int value) {
-        this.value = value;
-    }
-
-
-    void reset() {
-        setValue(0);
-        setEnabled(true);
-        setText("");
-        
-    }
-
-    void reveal() {
-        setEnabled(false);
-//        setText(isAMine() ? "X" : String.valueOf(value));
-    }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -89,7 +67,7 @@ public class Cell extends JButton {
     }
     
 	@Override
-  public Dimension getPreferredSize() {
+	public Dimension getPreferredSize() {
       return new Dimension(40, 40);
   }
 
@@ -104,12 +82,19 @@ public class Cell extends JButton {
     protected void colorCell(Color color) {
             setBackground(color);
         }
-    
-    
+
+
+	public State getState() {
+		return state;
+	}
+	
+	public void setState(State state) {
+		this.state = state;
+	}
+	
     public enum State {
         CONTAINS_SHIP, NO_SHIP, UNKNOWN
     }
-
-
+    
 
 }
