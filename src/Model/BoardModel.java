@@ -1,5 +1,9 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Model.Ship.Type;
 import View.BoardView;
 import View.Cell;
 
@@ -8,8 +12,12 @@ public class BoardModel {
 	public static final int BOARD_DIMENSION = 10;
     private Cell[][] cells;
     private int posX, posY;
-    private Ship shipPlacing;
+	boolean allPlaced;
+
+
+	private Ship shipPlacing;
     private BoardView boardView;
+	List<Ship> ships = new ArrayList<Ship>();
 	
     public BoardModel(boolean ownBoard, BoardView boardView) {
 
@@ -21,6 +29,9 @@ public class BoardModel {
                 cells[i][j] = new Cell(i, j, null);
             }
         }
+		for (Type shipType : Type.values() ) {
+			ships.add(new Ship(shipType));
+		}
 
     }
 	
@@ -69,18 +80,45 @@ public class BoardModel {
     }
     
     public boolean isntOverlapping() {
+    	
         for (int i = 0; i < getShipLength(); i++) {
             if (shipPlacing.isVertical()) {
-                if (cells[posX][posY + i].isShip())
-                    return false;
+                if (cells[posX][posY + i].isShip() && !cells[posX][posY + i].compareShips(shipPlacing))
+                	 return false;
+                   
             } else {
-                if (cells[posX + i][posY].isShip())
+                if (cells[posX + i][posY].isShip() && !cells[posX + i][posY].compareShips(shipPlacing))
                     return false;
             }
             
         }
     	return true;
     }
+    
+    public boolean isBoardReady() {
+    	//for all ships
+    	ships.forEach((shipss) ->{    		
+    		int shipCount = 0;
+    		setAllPlaced(true);
+        	for(int i = 0; i<BOARD_DIMENSION;i++) {
+        		for(int j = 0;j<BOARD_DIMENSION; j++) {        			
+        			if(cells[i][j].isShip()) {
+        				if(cells[i][j].getShip().getName().equals(shipss.getName())) {
+            				shipCount++;
+        				}
+        			}
+        		}
+        	}        	
+        	if(shipss.getLength() != shipCount) {
+    			System.out.println("place " + shipss.getName());
+    			setAllPlaced(false);
+    		}        	
+        }
+    			);      	
+    	return isAllPlaced();
+    }
+    
+    
     
     public void removeShipType() {
     	for(int i = 0; i<BOARD_DIMENSION;i++) {
@@ -112,9 +150,17 @@ public class BoardModel {
         return true;
     }
     
+    public boolean isAllPlaced() {
+		return allPlaced;
+	}
+
+	public void setAllPlaced(boolean allPlaced) {
+		this.allPlaced = allPlaced;
+	}
 
     
     
     
     
 }
+

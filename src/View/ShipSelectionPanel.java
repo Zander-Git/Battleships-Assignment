@@ -1,5 +1,7 @@
 package View;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -65,6 +67,8 @@ public class ShipSelectionPanel extends JPanel{
       	airCarrierBtn.setSelected(true);
       	
       	box2.add(readyBtn);      	
+
+
       	
       	oriBox.add(horizontalBtn);
       	oriBox.add(verticalBtn);
@@ -80,14 +84,17 @@ public class ShipSelectionPanel extends JPanel{
       	orientaionGroup.add(verticalBtn);
       	
       	this.add(radioBox);
-      	this.add(box2);
+//      	this.add(box2);
       	this.add(oriBox);
       	
-      	
+
     	
     }
     
-    public void printBtnText() {
+
+    
+
+	public void printBtnText() {
     	System.out.println(getShipSelected());
     }
     
@@ -121,6 +128,6 @@ public class ShipSelectionPanel extends JPanel{
 
 
     }
-	//some kind of controller class to set board model ship length, based on button name in ShipModel
+
 }
 

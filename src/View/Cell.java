@@ -51,6 +51,10 @@ public class Cell extends JButton {
         return (ship != null);
     }
 
+    public boolean compareShips(Ship otherShip) {
+    	return (ship == otherShip);
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

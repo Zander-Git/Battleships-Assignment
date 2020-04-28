@@ -3,11 +3,13 @@ package View;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import Model.BoardModel;
@@ -25,10 +27,14 @@ public class BoardView extends JPanel{
 	private boolean ownBoard;
 	ShipSelectionPanel shipPanel;
 	BoardModel boardModel;
+	JButton readyBtn;
 	
-	
-	private final ActionListener actionListener = actionEvent -> {
+	final ActionListener actionListener = actionEvent -> {
         Object source = actionEvent.getSource();
+//        if (source == readyBtn) {
+//            //checkBoard
+//        	System.out.println("test");
+//        }else
             handleCell((Cell) source);
             
     };    
@@ -46,7 +52,22 @@ public class BoardView extends JPanel{
 		this.ownBoard = ownBoard;
 		this.boardModel = new BoardModel(ownBoard, this);
 		addCells();
-		System.out.println("done");
+		
+		JButton readyBtn 	= new JButton("Ready?");
+
+		readyBtn.addActionListener(new ActionListener(){  
+		    public void actionPerformed(ActionEvent e){  
+		    	if(boardModel.isBoardReady()) {
+		    		System.out.println("ready :)");
+		    	}
+		    	else {
+		    		System.out.println("not ready :(");
+		    	}
+	    }
+
+	    });  
+		
+		this.add(readyBtn);
 	
 		for (Type shipType : Type.values() ) {
 			ships.add(new Ship(shipType));
@@ -56,6 +77,8 @@ public class BoardView extends JPanel{
 	
 private void handleCell(Cell source) {
 //inner anonymous class?
+	
+
 	
 	for(int i=0; i<ships.size();i++) {
 	if (shipPanel.getShipSelected() == ships.get(i).getName()) {
