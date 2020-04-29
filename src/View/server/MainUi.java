@@ -1,10 +1,13 @@
-package View;
+package view.server;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import view.components.BoardView;
+import view.components.ShipSelectionPanel;
 
 public class MainUi {
 
@@ -26,8 +29,8 @@ public class MainUi {
 		configPanel = new ClientConfigPanelView(this.frame);
 		
 //		myBoard = new BoardView(false);	
-		myBoard = new BoardView(false, selectPanel);	
-//		yourBoard = new BoardView(false);
+		myBoard = new BoardView(true, selectPanel);	
+		yourBoard = new BoardView(false, null);
 		
 		
 	
@@ -36,7 +39,8 @@ public class MainUi {
 		frame.setLayout(new BorderLayout());
 
 		leftPanel.add(myBoard);
-		rightPanel.add(selectPanel);
+		leftPanel.add(selectPanel);
+		rightPanel.add(yourBoard);
 		
 		rootPanel.add(configPanel, BorderLayout.NORTH);
 		rootPanel.add(leftPanel, BorderLayout.WEST);
@@ -52,9 +56,7 @@ public class MainUi {
 	}  
 
 
-	public static void main(String[] args) {  
-		new MainUi();  		
-	} 
+
 }
 
 

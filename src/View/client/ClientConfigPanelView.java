@@ -1,4 +1,4 @@
-package View;
+package view.client;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,10 +12,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import ClientSockets.SimpleClient;
+
 
 
 public class ClientConfigPanelView extends JPanel{
 
+	private static final long serialVersionUID = 1L;
 	JLabel lblPortNumber;
 	JTextField txtPortNumber;
 	JLabel lblIPAddress;
@@ -25,12 +28,12 @@ public class ClientConfigPanelView extends JPanel{
 	JButton btnTest;
 	
 	JFrame frmclientMainWindow;
-//	SimpleClient clientComponent;
+	SimpleClient clientComponent;
 	
 	public ClientConfigPanelView(JFrame frmMainWindow ) {
 		
 		this.frmclientMainWindow = frmMainWindow;
-//		this.clientComponent = clientcomponent;
+		this.clientComponent = clientComponent;
 		
 		this.lblPortNumber = new JLabel("Port number: ");
 		this.txtPortNumber = new JTextField(10);
@@ -63,7 +66,7 @@ public class ClientConfigPanelView extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				txtIPAddress.setText("");
 				txtPortNumber.setText("");
-				System.out.println("butts lol");
+//				System.out.println("butts lol");
 			}
 		});
 		
@@ -79,21 +82,21 @@ public class ClientConfigPanelView extends JPanel{
 		
 		
 		
-//		this.btnStart.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				
-//				try {
-//					clientComponent.init(txtIPAddress.getText(), Integer.parseInt(txtPortNumber.getText()));
-//				} catch (NumberFormatException | IOException e1) {
-//					System.err.println("Error in connecting to the server");
-//					JOptionPane.showMessageDialog(frmclientMainWindow, "Error in connecting the server!",
-//							"Server Error" , JOptionPane.ERROR_MESSAGE );
-//				}
-//				
-//			}
-//		});
+		this.btnStart.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					clientComponent.init(txtIPAddress.getText(), Integer.parseInt(txtPortNumber.getText()));
+				} catch (NumberFormatException | IOException e1) {
+					System.err.println("Error in connecting to the server");
+					JOptionPane.showMessageDialog(frmclientMainWindow, "Error in connecting the server!",
+							"Server Error" , JOptionPane.ERROR_MESSAGE );
+				}
+				
+			}
+		});
 		
 		
 	}

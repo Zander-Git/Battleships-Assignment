@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.Ship.Type;
-import View.BoardView;
-import View.Cell;
+import view.components.BoardView;
+import view.components.Cell;
 
 public class BoardModel {
 	
@@ -14,7 +14,6 @@ public class BoardModel {
     private int posX, posY;
 	boolean allPlaced;
 
-
 	private Ship shipPlacing;
     private BoardView boardView;
 	List<Ship> ships = new ArrayList<Ship>();
@@ -22,13 +21,15 @@ public class BoardModel {
     public BoardModel(boolean ownBoard, BoardView boardView) {
 
     	this.boardView = boardView;
+    	
         cells = new Cell[BOARD_DIMENSION][BOARD_DIMENSION];
-        // populates the squares array
         for (int i = 0; i < BOARD_DIMENSION; i++) {
             for (int j = 0; j < BOARD_DIMENSION; j++) {
                 cells[i][j] = new Cell(i, j, null);
             }
         }
+        
+        
 		for (Type shipType : Type.values() ) {
 			ships.add(new Ship(shipType));
 		}
@@ -117,9 +118,7 @@ public class BoardModel {
     			);      	
     	return isAllPlaced();
     }
-    
-    
-    
+     
     public void removeShipType() {
     	for(int i = 0; i<BOARD_DIMENSION;i++) {
     		for(int j = 0;j<BOARD_DIMENSION; j++) {

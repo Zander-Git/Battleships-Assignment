@@ -1,4 +1,4 @@
-package View;
+package view.components;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -16,11 +16,15 @@ import Model.BoardModel;
 
 import Model.Ship;
 import Model.Ship.Type;
-import View.Cell.State;
+import view.components.Cell.State;
 
 public class BoardView extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
+	private int gameMode;
+	private final int SETUP = 0;
+	private final int PLAYING = 1;
+	private final int FINISHED = 2;
 	private int gridSize = 10;
 	Cell[][] cells=new Cell[gridSize][gridSize];	
 	List<Ship> ships = new ArrayList<Ship>();
@@ -28,13 +32,10 @@ public class BoardView extends JPanel{
 	ShipSelectionPanel shipPanel;
 	BoardModel boardModel;
 	JButton readyBtn;
+
 	
 	final ActionListener actionListener = actionEvent -> {
         Object source = actionEvent.getSource();
-//        if (source == readyBtn) {
-//            //checkBoard
-//        	System.out.println("test");
-//        }else
             handleCell((Cell) source);
             
     };    
@@ -47,54 +48,73 @@ public class BoardView extends JPanel{
 //		
 //	}
 	
-	public BoardView(boolean ownBoard, ShipSelectionPanel shipPanel) {
+public BoardView(boolean ownBoard, ShipSelectionPanel shipPanel) {
 		this.shipPanel = shipPanel;
 		this.ownBoard = ownBoard;
 		this.boardModel = new BoardModel(ownBoard, this);
 		addCells();
 		
+		if (ownBoard) {
 		JButton readyBtn 	= new JButton("Ready?");
-
 		readyBtn.addActionListener(new ActionListener(){  
 		    public void actionPerformed(ActionEvent e){  
 		    	if(boardModel.isBoardReady()) {
 		    		System.out.println("ready :)");
-		    	}
-		    	else {
+		    		startGame();
+		    		readyBtn.setVisible(false);
+		    		
+		    	}else {
 		    		System.out.println("not ready :(");
 		    	}
 	    }
-
 	    });  
-		
 		this.add(readyBtn);
-	
+		
+		}
+		
 		for (Type shipType : Type.values() ) {
 			ships.add(new Ship(shipType));
 		}
 
 	}
-	
-private void handleCell(Cell source) {
-//inner anonymous class?
-	
 
-	
-	for(int i=0; i<ships.size();i++) {
-	if (shipPanel.getShipSelected() == ships.get(i).getName()) {
-		Ship selectedShip = ships.get(i);		
-		
 
-		source.setState(State.CONTAINS_SHIP);
-		boardModel.placeShip(selectedShip, source.getRow(), source.getCol(), isVertical());
-//		source.setShip(selectedShip);
+protected void startGame() {
+	if(ownBoard) {
+		setCellsEnabled(false);
+	}else {
+		setCellsEnabled(true);
+		for (int row = 0; row < gridSize; row++) {
+	        for (int col = 0; col < gridSize; col++) {
+	        	cells[row][col].setBackground(Color.RED);
+	        }
+		}
 	}
 	
 }
-//System.out.println(boardModel.getCell(source).getShip().getName());
 
-
+private void handleCell(Cell source) {
+//inner anonymous class?
 	
+	if(ownBoard) {
+		for(int i=0; i<ships.size();i++) {
+			if (shipPanel.getShipSelected() == ships.get(i).getName()) {
+				Ship selectedShip = ships.get(i);	
+				source.setState(State.CONTAINS_SHIP);
+				boardModel.placeShip(selectedShip, source.getRow(), source.getCol(), isVertical());
+				}
+	
+			}
+	}
+	else {
+		//if connectionOPne
+		//check oponent cells
+		//if hit
+			//reduce health, check for other
+			//if no other, sink. otherwuse health--
+			//colour cell acordingly, maybe others
+		//else chill
+	}
 }
 		
 public boolean isVertical() {
@@ -131,26 +151,40 @@ private void addCells() {
                 }
             });
 
-            if(ownBoard) {
-            	cells[row][col].setEnabled(false);
+            if(!ownBoard) {
+//            	cells[row][col].setEnabled(false);
+//            	cells[row][col].setBackground(Color.GRAY);
             	
             }
         }
     }
 
     this.add(grid);
-
 }  	
     
 public void colorCellFromBoardModel(int posX, int posY, Color color) {
 	cells[posX][posY].setBackground(color);
 
 }
-//public CellModel getCell(int x, int y) {
-//    return cells[x][y];
-//}
+
+private void setCellsEnabled(boolean enabled) {
+	for (int row = 0; row < gridSize; row++) {
+        for (int col = 0; col < gridSize; col++) {
+        	cells[row][col].setEnabled(enabled);
+        }
+	}
+	
+        	
+}
 
 
+public int getGameMode() {
+	return gameMode;
+}
 
+
+public void setGameMode(int gameMode) {
+	this.gameMode = gameMode;
+}
 
 }

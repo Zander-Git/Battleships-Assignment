@@ -1,7 +1,5 @@
-package View;
+package view.components;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -116,10 +114,10 @@ public class ShipSelectionPanel extends JPanel{
 
             if (button.isSelected() ) {
                 if(button.getText() == "horizontal") {
-                	return false;
+                	return true;
                 }
                 else {
-                	return true;
+                	return false;
                 }
             }
         }

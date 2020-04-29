@@ -3,13 +3,10 @@ package Model;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import View.Cell;
+import view.components.Cell;
 
 
 public class Ship {
-	
-	private int length;
-
 	
     private Type type;
     private ArrayList<Cell> cells;
@@ -21,7 +18,7 @@ public class Ship {
     public Ship(Type type) {
         this.type = type;
         this.vertical = false;
-        this.health = type.length;
+        this.setHealth(type.length);
         this.color = type.shipColor;
         cells = new ArrayList<Cell>();
     }
@@ -50,8 +47,15 @@ public class Ship {
 		return vertical;
 	}
 
-	
-    public enum Type {
+    public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public enum Type {
         AIRCRAFT_CARRIER(5, "aircraft carrier", Color.BLUE ), BATTLESHIP(4, "battleship", Color.GREEN), SUBMARINE(
                 3, "submarine", Color.YELLOW), DESTROYER(3, "destroyer", Color.ORANGE), PATROL_BOAT(2,
                 "patrol boat", Color.MAGENTA);

@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 import Model.BoardModel;
 import Model.CellModel;
-import View.BoardView;
-import View.Cell;
+import view.client.BoardView;
+import view.client.Cell;
 
 public class Controller {    
 
@@ -19,7 +19,7 @@ public class Controller {
 
         this.theModel = theModel;        
 
-        // Tell the View that when ever the calculate button
+        // Tell the view.client that when ever the calculate button
         // is clicked to execute the actionPerformed method
         // in the printListener inner class         
 

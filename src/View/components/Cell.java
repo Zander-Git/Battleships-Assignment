@@ -1,4 +1,4 @@
-package View;
+package view.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,8 +17,6 @@ public class Cell extends JButton {
     private Ship ship;
 	private State state;    
 
-//	private State state;
-	
 	public Cell(final int row, final int col,
          final ActionListener actionListener) {
         this.row = row;
@@ -33,11 +31,9 @@ public class Cell extends JButton {
 		return row;
 	}
 
-
 	public int getCol() {
 		return col;
 	}
-
 
     public Ship getShip() {
     	return ship;
@@ -86,7 +82,6 @@ public class Cell extends JButton {
     protected void colorCell(Color color) {
             setBackground(color);
         }
-
 
 	public State getState() {
 		return state;
