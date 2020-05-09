@@ -6,7 +6,9 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+
 import components.*;
+import sockets.client.SimpleClient;
 
 public class MainUi {
 
@@ -15,17 +17,21 @@ public class MainUi {
 	ShipSelectionPanel selectPanel;
 	BoardView myBoard, yourBoard;
 	
+	SimpleClient clientcomponent;
+	
 	private static final int SIZE = 500;
 
 	public MainUi(){     
 
+		this.clientcomponent = new SimpleClient(this);
+		
 		frame=new JFrame();	        
 		JPanel rootPanel = new JPanel(new BorderLayout());
 		JPanel leftPanel = new JPanel(new GridLayout(1, 0));
 		JPanel rightPanel = new JPanel(new GridLayout(1, 0));
 	
 		selectPanel = new ShipSelectionPanel();
-		configPanel = new ClientConfigPanelView(this.frame);
+		configPanel = new ClientConfigPanelView(this.frame, this.clientcomponent);
 		
 //		myBoard = new BoardView(false);	
 		myBoard = new BoardView(true, selectPanel);	

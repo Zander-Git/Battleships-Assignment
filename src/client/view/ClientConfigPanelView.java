@@ -30,10 +30,10 @@ public class ClientConfigPanelView extends JPanel{
 	JFrame frmclientMainWindow;
 	SimpleClient clientComponent;
 	
-	public ClientConfigPanelView(JFrame frmMainWindow ) {
+	public ClientConfigPanelView(JFrame frmMainWindow, SimpleClient clientComponent) {
 		
 		this.frmclientMainWindow = frmMainWindow;
-//		this.clientComponent = serverComponent;
+		this.clientComponent = clientComponent;
 		
 		this.lblPortNumber = new JLabel("Port number: ");
 		this.txtPortNumber = new JTextField(10);
@@ -64,11 +64,8 @@ public class ClientConfigPanelView extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				txtIPAddress.setText("");
 				txtPortNumber.setText("");
-//				System.out.println("butts lol");
 			}
 		});
-		
-
 		
 		
 		

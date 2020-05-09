@@ -33,30 +33,29 @@ public class ServerConfigPanelView extends JPanel{
 	
 	//CHANGE TO SERVER
 	
-	public ServerConfigPanelView(JFrame frmServerWindow, SimpleServer clientComponent) {
+	public ServerConfigPanelView(JFrame frmServerWindow, SimpleServer serverComponent) {
 		
 		this.frmServerWindow = frmServerWindow;
 		this.serverComponent = serverComponent;
 		
 		this.lblPortNumber = new JLabel("Port number: ");
 		this.txtPortNumber = new JTextField(10);
-		
-		this.lblIPAddress = new JLabel("IP address: ");
-		this.txtIPAddress = new JTextField(10);
+//		
+//		this.lblIPAddress = new JLabel("IP address: ");
+//		this.txtIPAddress = new JTextField(10);
 		
 		this.btnClear = new JButton("Clear");
 		this.btnStart = new JButton("Start");
-		this.btnTest = new JButton("Test");
+
 		
 		this.setLayout(new GridLayout(3, 2, 4, 8));
 		
-		this.add(this.lblIPAddress, 0);
-		this.add(this.txtIPAddress, 1);
-		this.add(this.lblPortNumber, 2);
-		this.add(this.txtPortNumber, 3);
-		this.add(this.btnClear, 4);
-		this.add(this.btnStart,5);
-		this.add(this.btnTest,6);
+//		this.add(this.lblIPAddress, 0);
+//		this.add(this.txtIPAddress, 1);
+		this.add(this.lblPortNumber, 0);
+		this.add(this.txtPortNumber, 1);
+		this.add(this.btnClear, 2);
+		this.add(this.btnStart,3);
 	
 		setButtonActions();
 	}
@@ -67,22 +66,12 @@ public class ServerConfigPanelView extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				txtIPAddress.setText("");
+//				txtIPAddress.setText("");
 				txtPortNumber.setText("");
-//				System.out.println("butts lol");
 			}
 		});
 		
 
-		
-		this.btnTest.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("butts");
-			}
-		});
-		
 		
 		
 		this.btnStart.addActionListener(new ActionListener() {
