@@ -8,6 +8,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import components.Cell;
+import observer.Observable;
+import observer.Observer;
+import server.view.ServerMainUi;
+
 
 
 /**
@@ -16,7 +21,7 @@ import java.util.List;
  * @author thanuja
  * @version 20.11.2019
  */
-public class SimpleServer extends AbstractServerComponent implements Runnable{ //, Observable {
+public class SimpleServer extends AbstractServerComponent implements Runnable, Observable {
 
 	// reference variable for server socket. 
 	private ServerSocket 			serverSocket;
@@ -37,10 +42,10 @@ public class SimpleServer extends AbstractServerComponent implements Runnable{ /
 	int port;
 	
 	//reference to the GUI's receiver panel
-	//ServerUIView	guiserver;
+	ServerMainUi	guiserver;
 	
 	// list of observers interested in this class (Observable)
-//	private List<Observer> observers;
+	private List<Observer> observers;
 	
 	// boolean flag to indicate if the state of the class has changed.
 	private boolean			changed;
@@ -49,18 +54,18 @@ public class SimpleServer extends AbstractServerComponent implements Runnable{ /
 	private String			receivedMessage;
 	
 	
-//	public SimpleServer(ServerUIView gui) {
-//		
-//		this.guiserver = gui;
-//		this.stopServer = false;
-//		
-//		/**
-//		 * Initializes the ThreadGroup. 
-//		 * Use of a ThreadGroup is easier when handling multiple clients, although it is not a must. 
-//		 */
-//		this.clientThreadGroup = new ThreadGroup("ClientManager threads");
-//		
-//	}
+	public SimpleServer(ServerMainUi gui) {
+		
+		this.guiserver = gui;
+		this.stopServer = false;
+		
+		/**
+		 * Initializes the ThreadGroup. 
+		 * Use of a ThreadGroup is easier when handling multiple clients, although it is not a must. 
+		 */
+		this.clientThreadGroup = new ThreadGroup("ClientManager threads");
+		
+	}
 
 	/**
 	 * Constructor.
@@ -68,7 +73,7 @@ public class SimpleServer extends AbstractServerComponent implements Runnable{ /
 	 */
 	public SimpleServer() {
 		
-//		this.observers = new ArrayList<Observer>();
+		this.observers = new ArrayList<Observer>();
 		
 		this.stopServer = false;
 		
@@ -109,25 +114,28 @@ public class SimpleServer extends AbstractServerComponent implements Runnable{ /
 	 * @param client
 	 */
 	public synchronized void handleMessagesFromClient(String msg, ClientManager client) {
-		
+		System.out.println("this point 2.1");
 		// format the client message before displaying in server's terminal output. 
         String formattedMessage = String.format("[client %d] : %s", client.getClientID(), msg); 
-		
+        System.out.println("this point 2.2");
         this.receivedMessage = formattedMessage;
+        System.out.println("this point 2.3");
         this.changed = true;
-//        notifyObservers();
-        
-        // display(formattedMessage);
-        
-        
-        // a function in the UI to display the message
-        // guiserver.getReceivePanel().updateReceiverWindow(msg);
-        
-        //prepare a response for the client. 
-		//String response = "[server says]: " + msg.toUpperCase();					
-		//sendMessageToClient(response, client);
+        System.out.println("this point 2.4");
+        notifyObservers();
+        System.out.println("this point 2.5");
 		
 	}
+	
+public synchronized void handleMessagesFromClient(Cell cellGuessed, ClientManager client) {
+		
+//	guiClient.getPlayerBoard().checkCell(cellGuessed);
+//	System.out.println(cellGuessed.getCol());
+	display(cellGuessed.getName());
+		
+	}
+	
+	
 	
 	/**
 	 * Handles displaying of messages received from each client. 
@@ -163,6 +171,10 @@ public class SimpleServer extends AbstractServerComponent implements Runnable{ /
 				
 			}
 		}
+		
+//		System.out.println(msg);
+		
+		
 	}
 	
 	/**
@@ -343,51 +355,51 @@ public class SimpleServer extends AbstractServerComponent implements Runnable{ /
 	/**
 	 * Add an observer to the list, if it is not available in the current list
 	 */
-//	@Override
-//	public void addObserver(Observer obs) {
-//		if(obs == null) {
-//			throw new NullPointerException("A null observer..");
-//		}
-//		if(!this.observers.contains(obs)) {
-//			this.observers.add(obs);
-//		}
-//	}
-//
-//	/**
-//	 * remove an onbserver if it exists in the list
-//	 */
-//	@Override
-//	public void removeObserver(Observer obs) {
-//		if(obs == null) {
-//			throw new NullPointerException("A null observer..");
-//		}
-//		
-//		if(this.observers.contains(obs)) {
-//			this.observers.remove(obs);
-//		}
-//		
-//	}
-//
-//	/**
-//	 * notify all observer, when the changed = true;
-//	 * gets called, from the handleMessagefromCLient() i.e., when a new message is received from the client.
-//	 */
-//	@Override
-//	public void notifyObservers() {
-//		
-//		if(!this.changed) {
-//			return;
-//		}
-//		
-//		for (Observer observer : observers) {
-//			observer.update();
-//		}
-//		this.changed = false;
-//		
-//	}
-//
-//	@Override
-//	public Object getUpdate() {
-//		return this.receivedMessage;
-//	}
+	@Override
+	public void addObserver(Observer obs) {
+		if(obs == null) {
+			throw new NullPointerException("A null observer..");
+		}
+		if(!this.observers.contains(obs)) {
+			this.observers.add(obs);
+		}
+	}
+
+	/**
+	 * remove an onbserver if it exists in the list
+	 */
+	@Override
+	public void removeObserver(Observer obs) {
+		if(obs == null) {
+			throw new NullPointerException("A null observer..");
+		}
+		
+		if(this.observers.contains(obs)) {
+			this.observers.remove(obs);
+		}
+		
+	}
+
+	/**
+	 * notify all observer, when the changed = true;
+	 * gets called, from the handleMessagefromCLient() i.e., when a new message is received from the client.
+	 */
+	@Override
+	public void notifyObservers() {
+		
+		if(!this.changed) {
+			return;
+		}
+		
+		for (Observer observer : observers) {
+			observer.update();
+		}
+		this.changed = false;
+		
+	}
+
+	@Override
+	public Object getUpdate() {
+		return this.receivedMessage;
+	}
 }

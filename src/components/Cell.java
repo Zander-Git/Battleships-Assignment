@@ -61,10 +61,10 @@ public class Cell extends JButton {
                col == cell.col;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(row, col);
-    }
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(row, col);
+//    }
     
 	@Override
 	public Dimension getPreferredSize() {

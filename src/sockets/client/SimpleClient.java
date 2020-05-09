@@ -8,7 +8,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
-import client.view.MainUi;
+import client.view.ClientMainUi;
+import components.Cell;
 
 
 
@@ -40,10 +41,10 @@ public class SimpleClient implements Runnable {
 	private String 					host;
 	private int 					port;
 	
-	MainUi		guiClient;
+	ClientMainUi		guiClient;
 	
 	
-	public SimpleClient(MainUi guiClient) {
+	public SimpleClient(ClientMainUi guiClient) {
 		this.guiClient = guiClient;
 	}
 	
@@ -108,6 +109,15 @@ public class SimpleClient implements Runnable {
 
 		this.output.writeObject(msg);
 	}
+	
+//	public void sendMessageToServer(Cell cellGuessed) throws IOException {
+//		if (this.clientSocket == null || this.output == null)
+//			throw new SocketException("socket does not exist");
+//
+//		this.output.writeObject(cellGuessed);
+//	}
+	
+	
 
 	/**
 	 * Handle message from the server. In this case, simply display them. 
@@ -119,6 +129,12 @@ public class SimpleClient implements Runnable {
 //		guiClient.getReceivePanel().updateReceiverWindow(msg);
 
 	}
+	
+	
+	public void handleMessageFromServer(Cell cellGuessed) {
+//		guiClient.getPlayerBoard().checkCell(cellGuessed);
+	}
+	
 	
 	/**
 	 * Simply display a String message in the terminal. 

@@ -39,7 +39,8 @@ public class ClientConfigPanelView extends JPanel{
 		this.txtPortNumber = new JTextField(10);
 		
 		this.lblIPAddress = new JLabel("IP address: ");
-		this.txtIPAddress = new JTextField(10);
+		this.txtIPAddress = new JTextField("127.0.0.1");
+		
 		
 		this.btnClear = new JButton("Clear");
 		this.btnStart = new JButton("Connect");

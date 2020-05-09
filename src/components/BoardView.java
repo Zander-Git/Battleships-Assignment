@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import components.Cell.State;
 import model.BoardModel;
 import model.Ship;
 import model.Ship.Type;
+import sockets.client.SimpleClient;
+import sockets.server.SimpleServer;
 
 public class BoardView extends JPanel{
 	
@@ -31,7 +34,9 @@ public class BoardView extends JPanel{
 	ShipSelectionPanel shipPanel;
 	BoardModel boardModel;
 	JButton readyBtn;
-
+	
+	SimpleClient sClient;
+	SimpleServer sServer;
 	
 	final ActionListener actionListener = actionEvent -> {
         Object source = actionEvent.getSource();
@@ -47,7 +52,18 @@ public class BoardView extends JPanel{
 //		
 //	}
 	
-public BoardView(boolean ownBoard, ShipSelectionPanel shipPanel) {
+    
+public BoardView(boolean ownBoard, ShipSelectionPanel shipPanel, SimpleClient _sClient) {
+	sClient = _sClient;
+	init(ownBoard, shipPanel);
+}
+
+public BoardView(boolean ownBoard, ShipSelectionPanel shipPanel, SimpleServer _sServer) {
+	sServer = _sServer;
+	init(ownBoard, shipPanel);
+}
+
+private void init(boolean ownBoard, ShipSelectionPanel shipPanel) {
 		this.shipPanel = shipPanel;
 		this.ownBoard = ownBoard;
 		this.boardModel = new BoardModel(ownBoard, this);
@@ -77,7 +93,6 @@ public BoardView(boolean ownBoard, ShipSelectionPanel shipPanel) {
 
 	}
 
-
 protected void startGame() {
 	if(ownBoard) {
 		setCellsEnabled(false);
@@ -106,6 +121,11 @@ private void cellAction(Cell source) {
 			}
 	}
 	else {
+		int x = source.getCol();
+		int y = source.getRow();
+		
+		sendMessage();
+//		System.out.println(x + "," + y);
 		//if connectionOPne
 		//check oponent cells at source.x&y
 		//if hit
@@ -115,7 +135,45 @@ private void cellAction(Cell source) {
 		//else chill
 	}
 }
-		
+
+private void sendMessage() {
+	try {
+		if (sClient!=null && sServer == null) {
+			sClient.sendMessageToServer("Hi bby");
+
+		}
+		else if (sClient==null && sServer != null) {
+			sServer.sendMessageToClient("Hi bbyyy");
+		}
+		else {
+			throw new Exception("Neither client nor server initialised.");
+		}
+	}
+	catch (Exception e){
+		System.out.println(e.toString());
+		System.exit(1);
+	}
+}
+
+//private void sendMessage(Cell cell) {
+//	try {
+//		if (sClient!=null && sServer == null) {
+//			sClient.sendMessageToServer(cell);
+//		}
+//		else if (sClient==null && sServer != null) {
+//			sServer.sendMessageToClient(cell.toString());
+//		}
+//		else {
+//			throw new Exception("Neither client nor server initialised.");
+//		}
+//	}
+//	catch (Exception e){
+//		System.out.println(e.toString());
+//		System.exit(1);
+//	}
+//}
+
+
 public boolean isVertical() {
 	return shipPanel.getOrientationSelected();
 	
@@ -174,11 +232,9 @@ private void setCellsEnabled(boolean enabled) {
 	} 	
 }
 
-
 public int getGameMode() {
 	return gameMode;
 }
-
 
 public void setGameMode(int gameMode) {
 	this.gameMode = gameMode;

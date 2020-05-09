@@ -123,13 +123,15 @@ public class ClientManager extends Thread {
 				// and then sends it for handling by the server,
 				// thread indefinitely waits at the following
 				// statement until something is received from the server
-				
+				System.out.println("point 1");
 				msg = (String)this.in.readObject();
+				System.out.println("point 2");
 				this.server.handleMessagesFromClient(msg, this);
-				
+				System.out.println("point 3");
 				if(msg.equals("over")) {
 					this.stopConnection = true;					
 				}				
+				System.out.println("point 4");
 			}
 			
 			System.out.println("[ClientManager: ] stopping the client connection ID: " + this.clientID);

@@ -1,7 +1,7 @@
 package server.main;
 
 
-import server.view.MainUi;
+import server.view.ServerMainUi;
 
 public class ServerLauncher {
 	
@@ -13,7 +13,7 @@ public class ServerLauncher {
 			@Override
 			public void run() {
 
-				new MainUi();
+				new ServerMainUi();
 
 			}
 		});

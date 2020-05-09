@@ -1,4 +1,4 @@
-package server.view;
+package client.view;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -6,38 +6,24 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import components.BoardView;
-import components.ShipSelectionPanel;
-import sockets.server.SimpleServer;
 
-public class MainUi {
+import components.*;
+import sockets.client.SimpleClient;
+
+public class ClientMainUi {
 
 	JFrame frame;  
-	ServerConfigPanelView configPanel;
+	ClientConfigPanelView configPanel;
 	ShipSelectionPanel selectPanel;
 	BoardView myBoard, yourBoard;
 	
-	SimpleServer 	servercomponent;
-	
-	private static MainUi serverUIInstance;
-	
-	/**
-	 * Public function to return an instance of the singleton class. 
-	 * @return
-	 */
-	public static MainUi getServerUIInstance() {
-		if(serverUIInstance == null) {
-			serverUIInstance = new MainUi();
-		}
-		return serverUIInstance;
-		
-	}
+	SimpleClient clientComponent;
 	
 	private static final int SIZE = 500;
 
-	public MainUi(){
+	public ClientMainUi(){     
 
-		servercomponent = new SimpleServer();
+		this.clientComponent = new SimpleClient(this);
 		
 		frame=new JFrame();	        
 		JPanel rootPanel = new JPanel(new BorderLayout());
@@ -45,11 +31,11 @@ public class MainUi {
 		JPanel rightPanel = new JPanel(new GridLayout(1, 0));
 	
 		selectPanel = new ShipSelectionPanel();
-		configPanel = new ServerConfigPanelView(this.frame, servercomponent );
+		configPanel = new ClientConfigPanelView(this.frame, this.clientComponent);
 		
 //		myBoard = new BoardView(false);	
-		myBoard = new BoardView(true, selectPanel);	
-		yourBoard = new BoardView(false, null);
+		myBoard = new BoardView(true, selectPanel, clientComponent);	
+		yourBoard = new BoardView(false, null, clientComponent);
 		
 		
 	

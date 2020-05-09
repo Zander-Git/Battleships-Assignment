@@ -1,6 +1,6 @@
 package client.main;
 
-import client.view.MainUi;
+import client.view.ClientMainUi;
 
 
 public class ClientLauncher {
@@ -12,7 +12,7 @@ public class ClientLauncher {
 			@Override
 			public void run() {
 
-				new MainUi();
+				new ClientMainUi();
 
 			}
 		});

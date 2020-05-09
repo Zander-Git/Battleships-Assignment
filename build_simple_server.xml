@@ -3,9 +3,13 @@
 <project name="MyServerUI" basedir="." default="main">
 
     <property name="server.src.dir"     value="src/sockets/server"/>
-	<property name="ui.src.dir"     value="src/server"/>
-	<property name="cmpnnts.src.dir"     value="src/components/"/>
-	<property name="mdl.src.dir"     value="src/model/"/>
+	<property name="client.src.dir"     value="src/sockets/client"/>
+	<property name="ui.src.dir"    		value="src/server"/>
+	<property name="Cui.src.dir"    	value="src/client"/>
+	
+	<property name="cmpnnts.src.dir"    value="src/components/"/>
+	<property name="mdl.src.dir"     	value="src/model/"/>
+	<property name="obs.src.dir"     	value="src/observer"/>
 		
 		
     <property name="build.dir"   value="build_server"/>
@@ -21,7 +25,7 @@
 
     <target name="compile">
         <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${server.src.dir};${ui.src.dir}/view;${ui.src.dir}/main;${cmpnnts.src.dir};${mdl.src.dir}" destdir="${classes.dir}"/>
+        <javac srcdir="${server.src.dir};${client.src.dir};${ui.src.dir}/view;${Cui.src.dir}/view;${ui.src.dir}/main;${cmpnnts.src.dir};${mdl.src.dir};${obs.src.dir}" destdir="${classes.dir}"/>
     </target>
 
     <target name="jar" depends="compile">
