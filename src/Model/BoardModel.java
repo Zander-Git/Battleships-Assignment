@@ -1,11 +1,14 @@
-package Model;
+package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Ship.Type;
-import view.components.BoardView;
-import view.components.Cell;
+import javax.swing.JOptionPane;
+
+import components.BoardView;
+import components.Cell;
+import model.Ship.Type;
 
 public class BoardModel {
 	
@@ -62,11 +65,13 @@ public class BoardModel {
     			placeShip();
     			}
     			else {
-    				System.out.println("overlapping");
+    				JOptionPane.showMessageDialog(boardView,"overlapping",
+    							"overlapping 2" , JOptionPane.ERROR_MESSAGE );
     			}
     	}
     	else {
-    		System.out.println("out of bounds");
+			JOptionPane.showMessageDialog(boardView,"out of bounds",
+					"out of bounds" , JOptionPane.ERROR_MESSAGE );
     	}
     	}
  

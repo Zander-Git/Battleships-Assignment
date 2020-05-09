@@ -1,9 +1,9 @@
-package Model;
+package model;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
-import view.components.Cell;
+import components.Cell;
 
 
 public class Ship {

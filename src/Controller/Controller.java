@@ -3,10 +3,10 @@ import java.awt.event.ActionEvent;
 
 import java.awt.event.ActionListener;
 
-import Model.BoardModel;
-import Model.CellModel;
-import view.client.BoardView;
-import view.client.Cell;
+import client.view.BoardView;
+import client.view.Cell;
+import model.BoardModel;
+import model.CellModel;
 
 public class Controller {    
 
@@ -19,7 +19,7 @@ public class Controller {
 
         this.theModel = theModel;        
 
-        // Tell the view.client that when ever the calculate button
+        // Tell the client.view that when ever the calculate button
         // is clicked to execute the actionPerformed method
         // in the printListener inner class         
 
