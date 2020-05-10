@@ -24,6 +24,7 @@ public class ClientMainUi {
 	public ClientMainUi(){     
 
 		this.clientComponent = new SimpleClient(this);
+
 		
 		frame=new JFrame();	        
 		JPanel rootPanel = new JPanel(new BorderLayout());
@@ -58,7 +59,15 @@ public class ClientMainUi {
 		this.frame.pack();
 		this.frame.setVisible(true);       
 
-	}  
+	}
+
+	public BoardView getMyBoardView() {
+		return myBoard;
+	}
+	
+	public BoardView getEnemyBoardView() {
+		return yourBoard;
+	} 
 
 
 

@@ -14,7 +14,7 @@ public class Ship {
     private int health;
 	private Color color;
 
-	
+ 
     public Ship(Type type) {
         this.type = type;
         this.vertical = false;

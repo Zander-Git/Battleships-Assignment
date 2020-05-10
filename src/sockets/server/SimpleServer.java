@@ -1,5 +1,6 @@
 package sockets.server;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import components.Cell;
+import components.Cell.State;
 import observer.Observable;
 import observer.Observer;
 import server.view.ServerMainUi;
@@ -42,7 +44,7 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 	int port;
 	
 	//reference to the GUI's receiver panel
-	ServerMainUi	guiserver;
+	ServerMainUi	guiServer;
 	
 	// list of observers interested in this class (Observable)
 	private List<Observer> observers;
@@ -54,18 +56,18 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 	private String			receivedMessage;
 	
 	
-	public SimpleServer(ServerMainUi gui) {
-		
-		this.guiserver = gui;
-		this.stopServer = false;
-		
-		/**
-		 * Initializes the ThreadGroup. 
-		 * Use of a ThreadGroup is easier when handling multiple clients, although it is not a must. 
-		 */
-		this.clientThreadGroup = new ThreadGroup("ClientManager threads");
-		
-	}
+//	public SimpleServer(ServerMainUi gui) {
+//		
+//		this.guiServer = gui;
+//		this.stopServer = false;
+//		
+//		/**
+//		 * Initializes the ThreadGroup. 
+//		 * Use of a ThreadGroup is easier when handling multiple clients, although it is not a must. 
+//		 */
+//		this.clientThreadGroup = new ThreadGroup("ClientManager threads");
+//		
+//	}
 
 	/**
 	 * Constructor.
@@ -114,29 +116,77 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 	 * @param client
 	 */
 	public synchronized void handleMessagesFromClient(String msg, ClientManager client) {
-		System.out.println("this point 2.1");
-		// format the client message before displaying in server's terminal output. 
-        String formattedMessage = String.format("[client %d] : %s", client.getClientID(), msg); 
-        System.out.println("this point 2.2");
-        this.receivedMessage = formattedMessage;
-        System.out.println("this point 2.3");
-        this.changed = true;
-        System.out.println("this point 2.4");
-        notifyObservers();
-        System.out.println("this point 2.5");
-		
+
+//		// format the client message before displaying in server's terminal output. 
+//        String formattedMessage = String.format("[client %d] : %s", client.getClientID(), msg); 
+//        this.receivedMessage = formattedMessage;
+//        this.changed = true;
+
+        String[] arrOfStr = msg.split(",", 0);
+
+        String typeOfMessage = arrOfStr[0];
+
+        int x = Integer.parseInt(arrOfStr[1]);
+	
+        int y = Integer.parseInt(arrOfStr[2]);
+  
+        Cell cellToCheck = guiServer.getMyBoardView().getCells(x, y);
+        
+        switch(typeOfMessage) {
+        case "f":
+            if (cellToCheck.getState() == State.CONTAINS_SHIP) {
+//            	System.out.println("hit");
+//            	handleHit();
+            	cellToCheck.setState(State.HIT);
+            	guiServer.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.RED);
+
+            	String replyMessage = "h," + Integer.toString(x)+","+Integer.toString(y);
+
+            	sendMessageToClient(replyMessage, client);
+            }
+            else {
+//            	System.out.println("miss");
+//            	handleMiss();
+            	cellToCheck.setState(State.MISSED);
+            	guiServer.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.GRAY);
+
+            	String replyMessage = "m," + Integer.toString(x)+","+Integer.toString(y);
+
+            	sendMessageToClient(replyMessage, client);
+            	
+            }
+          break;
+        case "m":
+            // code block
+        	guiServer.getEnemyBoardView().handleMiss(x, y);
+            break;
+          case "h":
+              // code block
+        	  guiServer.getEnemyBoardView().handleHit(x, y);
+              break;
+        default:
+          // code block
+      }
+
 	}
 	
-public synchronized void handleMessagesFromClient(Cell cellGuessed, ClientManager client) {
-		
-//	guiClient.getPlayerBoard().checkCell(cellGuessed);
-//	System.out.println(cellGuessed.getCol());
-	display(cellGuessed.getName());
+	
+	
+	
+	private void handleMiss() {
+
+		//change colour on my board
+		//send miss response
 		
 	}
-	
-	
-	
+
+	private void handleHit() {
+		//set cell to hit
+		//change color on my board
+		//send hit response
+		
+	}
+
 	/**
 	 * Handles displaying of messages received from each client. 
 	 * Called from handleMessagesFromClient()
@@ -201,6 +251,7 @@ public synchronized void handleMessagesFromClient(Cell cellGuessed, ClientManage
 		for (int i = 0; i < clientThreadList.length; i++) {
 			((ClientManager) clientThreadList[i]).sendMessageToClient(msg);
 		}
+//		guiServer.getBoardView().getCells(x, y);
 		
 	}
 	
@@ -296,6 +347,10 @@ public synchronized void handleMessagesFromClient(Cell cellGuessed, ClientManage
 		return this.stopServer;
 	}
 	
+	public void addGui(ServerMainUi gui) {
+		
+		this.guiServer = gui;
+	}
 	
 	/**
 	 * Main() to start the SimpleServer. 

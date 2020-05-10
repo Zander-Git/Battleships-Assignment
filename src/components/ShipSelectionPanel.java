@@ -108,12 +108,12 @@ public class ShipSelectionPanel extends JPanel{
         return null;
     }
 	
-    public boolean getOrientationSelected() {
+    public boolean getOrientationIfVertical() {
         for (Enumeration<AbstractButton> buttons = orientaionGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
             if (button.isSelected() ) {
-                if(button.getText() == "horizontal") {
+                if(button.getText() == "vertical") {
                 	return true;
                 }
                 else {

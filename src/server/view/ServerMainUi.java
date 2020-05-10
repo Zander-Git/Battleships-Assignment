@@ -37,7 +37,8 @@ public class ServerMainUi implements Observer {
 
 	public ServerMainUi(){
 
-		serverComponent = new SimpleServer(this);
+		serverComponent = new SimpleServer();
+		serverComponent.addGui(this);
 		
 		serverComponent.addObserver(this);
 		this.setObservable(serverComponent);
@@ -76,6 +77,14 @@ public class ServerMainUi implements Observer {
 
 	}  
 	
+	public BoardView getMyBoardView() {
+		return myBoard;
+	}
+	
+	public BoardView getEnemyBoardView() {
+		return yourBoard;
+	}
+	
 	SimpleServer getComponent(){
 		return serverComponent;
 	}
@@ -84,7 +93,10 @@ public class ServerMainUi implements Observer {
 	public void update() {
 	
 		String receivedMsg = (String) this.observableServer.getUpdate();
-		System.out.println(receivedMsg);
+		
+		System.out.println(receivedMsg); //change to send msg to client
+		
+		
 		// display the message where appropriate
 //		this.receivePanel.updateReceiverWindow(receivedMsg);
 		

@@ -39,7 +39,7 @@ public class ServerConfigPanelView extends JPanel{
 		this.serverComponent = serverComponent;
 		
 		this.lblPortNumber = new JLabel("Port number: ");
-		this.txtPortNumber = new JTextField(10);
+		this.txtPortNumber = new JTextField("4444");
 //		
 //		this.lblIPAddress = new JLabel("IP address: ");
 //		this.txtIPAddress = new JTextField(10);

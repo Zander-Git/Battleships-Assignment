@@ -1,5 +1,6 @@
 package sockets.client;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +11,7 @@ import java.net.SocketException;
 
 import client.view.ClientMainUi;
 import components.Cell;
+import components.Cell.State;
 
 
 
@@ -106,8 +108,13 @@ public class SimpleClient implements Runnable {
 	public void sendMessageToServer(String msg) throws IOException {
 		if (this.clientSocket == null || this.output == null)
 			throw new SocketException("socket does not exist");
-
+		
 		this.output.writeObject(msg);
+		
+//		String[] arrOfStr = msg.split(",");  //this is an example, send should send whole thing
+											//its the recieve that should do stuff
+//        for (String a : arrOfStr)              
+
 	}
 	
 //	public void sendMessageToServer(Cell cellGuessed) throws IOException {
@@ -124,24 +131,66 @@ public class SimpleClient implements Runnable {
 	 * @param msg
 	 */
 	public void handleMessageFromServer(String msg) {
-		display(msg);
-		
-//		guiClient.getReceivePanel().updateReceiverWindow(msg);
+//		display(msg);
+		System.out.println(msg);
+        String[] arrOfStr = msg.split(",", 0); 
+        String typeOfMessage = arrOfStr[0];
+        int x = Integer.parseInt(arrOfStr[1]); 
+        int y = Integer.parseInt(arrOfStr[2]); 
+        
+        Cell cellToCheck = guiClient.getMyBoardView().getCells(x, y);
+        
+        switch(typeOfMessage) {
+        case "f":
+            if (cellToCheck.getState() == State.CONTAINS_SHIP) {
+//            	System.out.println("hit");
+//            	handleHit();
+            	cellToCheck.setState(State.HIT);
+            	guiClient.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.RED);
+            	String replyMessage = "h," + Integer.toString(x)+","+Integer.toString(y);
+            	try {
+            		sendMessageToServer(replyMessage);
+            	}
+            	catch (IOException ex){
+            		System.err.println(ex);
+            	}
+            }
+            else {
+//            	System.out.println("miss");
+//            	handleMiss();
+            	cellToCheck.setState(State.MISSED);
+            	guiClient.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.GRAY);
+            	String replyMessage = "m," + Integer.toString(x)+","+Integer.toString(y);
+            	try {
+            		sendMessageToServer(replyMessage);
+            	}
+            	catch (IOException ex){
+            		System.err.println(ex);
+            	}
+            }
+          break;
+        case "m":
+          // code block
+        	guiClient.getEnemyBoardView().handleMiss(x, y);
+          break;
+        case "h":
+            // code block
+        	guiClient.getEnemyBoardView().handleHit(x, y);
+            break;
+        default:
+          // code block
+      }
+
 
 	}
-	
-	
-	public void handleMessageFromServer(Cell cellGuessed) {
-//		guiClient.getPlayerBoard().checkCell(cellGuessed);
-	}
-	
+
 	
 	/**
 	 * Simply display a String message in the terminal. 
 	 * @param message
 	 */
 	public void display(String message) {
-		System.out.println("> " + message);
+		System.out.println("> ppo " + message);
 	}
 	
 	

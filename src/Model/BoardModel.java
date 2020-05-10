@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import components.BoardView;
 import components.Cell;
+import components.Cell.State;
 import model.Ship.Type;
 
 public class BoardModel {
@@ -62,7 +64,7 @@ public class BoardModel {
     	if (inBoundry()) {
     			if(isntOverlapping()) {	
     			removeShipType();
-    			placeShip();
+    			placeShipInMemory();
     			}
     			else {
     				JOptionPane.showMessageDialog(boardView,"overlapping",
@@ -129,6 +131,7 @@ public class BoardModel {
     		for(int j = 0;j<BOARD_DIMENSION; j++) {
     			if (cells[i][j].getShip() == shipPlacing) {
         			cells[i][j].setShip(null);
+        			cells[i][j].setState(State.NO_SHIP);
         			boardView.colorCellFromBoardModel(i, j, null);
 
     		}
@@ -136,22 +139,24 @@ public class BoardModel {
     	}
     }
     	
-    public boolean placeShip() {
+    public boolean placeShipInMemory() {
         // puts ship on squares
         for (int i = 0; i < getShipLength(); i++) {
             if (shipPlacing.isVertical()) {
-            	cells[posX][posY + i].setShip(shipPlacing);
-                shipPlacing.setCell(cells[posX][posY + i]);
-                boardView.colorCellFromBoardModel(posX, posY + i, shipPlacing.getColor());
-                
+            	SubmitShip(posX + i, posY);            	                
             } else if (!shipPlacing.isVertical()) {
-            	cells[posX + i][posY].setShip(shipPlacing);
-                shipPlacing.setCell(cells[posX + i][posY]);
-                boardView.colorCellFromBoardModel(posX+ i, posY, shipPlacing.getColor());
+            	SubmitShip(posX, posY + i);
             }
         }
 
         return true;
+    }
+    
+    private void SubmitShip(int x, int y) {
+    	cells[x][y].setShip(shipPlacing);
+    	cells[x][y].setState(State.CONTAINS_SHIP);
+        shipPlacing.setCell(cells[x][y]);
+        colourCellsInView(x, y, shipPlacing.getColor());
     }
     
     public boolean isAllPlaced() {
@@ -162,7 +167,9 @@ public class BoardModel {
 		this.allPlaced = allPlaced;
 	}
 
-    
+    public void colourCellsInView(int x, int y, Color color) {
+    	boardView.colorCellFromBoardModel(x, y,color);
+    }
     
     
     

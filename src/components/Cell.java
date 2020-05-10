@@ -22,7 +22,7 @@ public class Cell extends JButton {
         this.row = row;
         this.col = col;
         this.ship = null;
-//        this.state = State.NO_SHIP;
+        this.state = State.NO_SHIP;
         addActionListener(actionListener);
 
     }
@@ -41,6 +41,7 @@ public class Cell extends JButton {
     
     public void setShip(Ship ship) {
 		this.ship = ship;
+		
 	}
     
     public boolean isShip() {
@@ -92,7 +93,7 @@ public class Cell extends JButton {
 	}
 	
     public enum State {
-        CONTAINS_SHIP, NO_SHIP, UNKNOWN
+        CONTAINS_SHIP, NO_SHIP, UNKNOWN, HIT, MISSED
     }
     
 

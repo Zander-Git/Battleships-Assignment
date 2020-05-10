@@ -45,13 +45,6 @@ public class BoardView extends JPanel{
     };    
 
 	
-//	public BoardView(boolean ownBoard) {
-//		this.ownBoard = ownBoard;
-//        this.boardModel = new BoardModel(ownBoard);
-//		addCells();
-//		
-//	}
-	
     
 public BoardView(boolean ownBoard, ShipSelectionPanel shipPanel, SimpleClient _sClient) {
 	sClient = _sClient;
@@ -117,33 +110,28 @@ private void cellAction(Cell source) {
 				source.setState(State.CONTAINS_SHIP);
 				boardModel.placeShip(selectedShip, source.getRow(), source.getCol(), isVertical());
 				}
-	
 			}
 	}
 	else {
-		int x = source.getCol();
-		int y = source.getRow();
+		int x = source.getRow();
+		int y = source.getCol();
 		
-		sendMessage();
-//		System.out.println(x + "," + y);
-		//if connectionOPne
-		//check oponent cells at source.x&y
-		//if hit
-			//reduce health, check for other
-			//if no other, sink. otherwuse health--
-			//colour cell acordingly, maybe others
-		//else chill
+		String fireMsg = "f," + Integer.toString(x)+","+Integer.toString(y);
+		sendMessage(fireMsg);
+
 	}
 }
 
-private void sendMessage() {
+private void sendMessage(String msg) {
+
+
 	try {
 		if (sClient!=null && sServer == null) {
-			sClient.sendMessageToServer("Hi bby");
+			sClient.sendMessageToServer(msg);
 
 		}
 		else if (sClient==null && sServer != null) {
-			sServer.sendMessageToClient("Hi bbyyy");
+			sServer.sendMessageToClient(msg);
 		}
 		else {
 			throw new Exception("Neither client nor server initialised.");
@@ -155,28 +143,28 @@ private void sendMessage() {
 	}
 }
 
-//private void sendMessage(Cell cell) {
-//	try {
-//		if (sClient!=null && sServer == null) {
-//			sClient.sendMessageToServer(cell);
-//		}
-//		else if (sClient==null && sServer != null) {
-//			sServer.sendMessageToClient(cell.toString());
-//		}
-//		else {
-//			throw new Exception("Neither client nor server initialised.");
-//		}
-//	}
-//	catch (Exception e){
-//		System.out.println(e.toString());
-//		System.exit(1);
-//	}
-//}
+public void handleMiss(int x, int y) {
+	cells[x][y].setBackground(Color.GRAY);
+	cells[x][y].setEnabled(false);
+}
 
+
+public void handleHit(int x, int y) {
+	cells[x][y].setBackground(Color.RED);
+	cells[x][y].setEnabled(false);;
+	
+}
+
+public Cell getCells(int x, int y) {
+	return boardModel.getCell(x,y);
+}
+
+public BoardModel getBoardModel() {
+	return boardModel;
+}
 
 public boolean isVertical() {
-	return shipPanel.getOrientationSelected();
-	
+	return shipPanel.getOrientationIfVertical();
 }
 
 private void addCells() {
@@ -188,25 +176,25 @@ private void addCells() {
         for (int col = 0; col < gridSize; col++) {
             cells[row][col] = new Cell(row, col, actionListener);
             grid.add(cells[row][col]);
-            cells[row][col].addMouseListener(new java.awt.event.MouseAdapter() {		//could probably delete
-            	Color originalColor = null;
-            	public void mouseEntered(MouseEvent evt) {
-            		Cell button = (Cell)evt.getComponent();
-                	originalColor = button.getBackground();
-                	
-                	if(button.getState() == State.NO_SHIP) {
-                	button.setBackground(Color.DARK_GRAY);
-                	}
-                }
-                public void mouseExited(MouseEvent evt) {
-                	Cell button = (Cell)evt.getComponent();
-                	if(button.getState() == State.NO_SHIP) {
-                		button.setBackground(originalColor);
-                    	}
-                	
-                	
-                }
-            });
+//            cells[row][col].addMouseListener(new java.awt.event.MouseAdapter() {		//could probably delete
+//            	Color originalColor = null;
+//            	public void mouseEntered(MouseEvent evt) {
+//            		Cell button = (Cell)evt.getComponent();
+//                	originalColor = button.getBackground();
+//                	
+//                	if(button.getState() == State.NO_SHIP) {
+//                	button.setBackground(Color.DARK_GRAY);
+//                	}
+//                }
+//                public void mouseExited(MouseEvent evt) {
+//                	Cell button = (Cell)evt.getComponent();
+//                	if(button.getState() == State.NO_SHIP) {
+//                		button.setBackground(originalColor);
+//                    	}
+//                	
+//                	
+//                }
+//            });
 
             if(!ownBoard) {
 //            	cells[row][col].setEnabled(false);
@@ -239,5 +227,7 @@ public int getGameMode() {
 public void setGameMode(int gameMode) {
 	this.gameMode = gameMode;
 }
+
+
 
 }
