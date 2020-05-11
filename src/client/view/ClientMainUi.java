@@ -16,6 +16,8 @@ public class ClientMainUi {
 	ClientConfigPanelView configPanel;
 	ShipSelectionPanel selectPanel;
 	BoardView myBoard, yourBoard;
+	private int gameMode;
+
 	
 	SimpleClient clientComponent;
 	
@@ -37,6 +39,7 @@ public class ClientMainUi {
 //		myBoard = new BoardView(false);	
 		myBoard = new BoardView(true, selectPanel, clientComponent);	
 		yourBoard = new BoardView(false, null, clientComponent);
+		yourBoard.setUserTurn(true);
 		
 		
 	
@@ -57,7 +60,8 @@ public class ClientMainUi {
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setContentPane(rootPanel);
 		this.frame.pack();
-		this.frame.setVisible(true);       
+		this.frame.setVisible(true);  
+//		SetGameMode(SETUP);
 
 	}
 

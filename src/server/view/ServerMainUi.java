@@ -53,6 +53,7 @@ public class ServerMainUi implements Observer {
 		
 		myBoard = new BoardView(true, selectPanel, serverComponent);	
 		yourBoard = new BoardView(false, null, serverComponent);
+		yourBoard.setUserTurn(false);
 		
 		
 	

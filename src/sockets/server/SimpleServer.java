@@ -143,6 +143,7 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
             	String replyMessage = "h," + Integer.toString(x)+","+Integer.toString(y);
 
             	sendMessageToClient(replyMessage, client);
+            	guiServer.getEnemyBoardView().setUserTurn(false);
             }
             else {
 //            	System.out.println("miss");
@@ -153,6 +154,7 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
             	String replyMessage = "m," + Integer.toString(x)+","+Integer.toString(y);
 
             	sendMessageToClient(replyMessage, client);
+            	guiServer.getEnemyBoardView().setUserTurn(true);
             	
             }
           break;

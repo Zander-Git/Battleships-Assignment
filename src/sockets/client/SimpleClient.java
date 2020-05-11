@@ -45,6 +45,10 @@ public class SimpleClient implements Runnable {
 	
 	ClientMainUi		guiClient;
 	
+	private final int SETUP = 0;
+	private final int PLAYING = 1;
+	private final int FINISHED = 2;
+	
 	
 	public SimpleClient(ClientMainUi guiClient) {
 		this.guiClient = guiClient;
@@ -111,21 +115,8 @@ public class SimpleClient implements Runnable {
 		
 		this.output.writeObject(msg);
 		
-//		String[] arrOfStr = msg.split(",");  //this is an example, send should send whole thing
-											//its the recieve that should do stuff
-//        for (String a : arrOfStr)              
-
 	}
 	
-//	public void sendMessageToServer(Cell cellGuessed) throws IOException {
-//		if (this.clientSocket == null || this.output == null)
-//			throw new SocketException("socket does not exist");
-//
-//		this.output.writeObject(cellGuessed);
-//	}
-	
-	
-
 	/**
 	 * Handle message from the server. In this case, simply display them. 
 	 * @param msg
@@ -142,9 +133,8 @@ public class SimpleClient implements Runnable {
         
         switch(typeOfMessage) {
         case "f":
+        	//Receive a message to guess or "fire" on  coordinates x,y
             if (cellToCheck.getState() == State.CONTAINS_SHIP) {
-//            	System.out.println("hit");
-//            	handleHit();
             	cellToCheck.setState(State.HIT);
             	guiClient.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.RED);
             	String replyMessage = "h," + Integer.toString(x)+","+Integer.toString(y);
@@ -154,10 +144,9 @@ public class SimpleClient implements Runnable {
             	catch (IOException ex){
             		System.err.println(ex);
             	}
+            	guiClient.getEnemyBoardView().setUserTurn(false);
             }
             else {
-//            	System.out.println("miss");
-//            	handleMiss();
             	cellToCheck.setState(State.MISSED);
             	guiClient.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.GRAY);
             	String replyMessage = "m," + Integer.toString(x)+","+Integer.toString(y);
@@ -167,14 +156,15 @@ public class SimpleClient implements Runnable {
             	catch (IOException ex){
             		System.err.println(ex);
             	}
+            	guiClient.getEnemyBoardView().setUserTurn(true);
             }
           break;
         case "m":
-          // code block
+          // Receive "miss" response
         	guiClient.getEnemyBoardView().handleMiss(x, y);
           break;
         case "h":
-            // code block
+            // Receive "hit" response
         	guiClient.getEnemyBoardView().handleHit(x, y);
             break;
         default:

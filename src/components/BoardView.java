@@ -24,13 +24,11 @@ public class BoardView extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 	private int gameMode;
-	private final int SETUP = 0;
-	private final int PLAYING = 1;
-	private final int FINISHED = 2;
+
 	private int gridSize = 10;
 	Cell[][] cells=new Cell[gridSize][gridSize];	
 	List<Ship> ships = new ArrayList<Ship>();
-	private boolean ownBoard;
+	private boolean ownBoard, userTurn;
 	ShipSelectionPanel shipPanel;
 	BoardModel boardModel;
 	JButton readyBtn;
@@ -87,21 +85,12 @@ private void init(boolean ownBoard, ShipSelectionPanel shipPanel) {
 	}
 
 protected void startGame() {
-	if(ownBoard) {
-		setCellsEnabled(false);
-	}else {
-		setCellsEnabled(true);
-		for (int row = 0; row < gridSize; row++) {
-	        for (int col = 0; col < gridSize; col++) {
-	        	cells[row][col].setBackground(Color.RED);
-	        }
-		}
-	}
+	setCellsEnabled(false);
+
 	
 }
 
 private void cellAction(Cell source) {
-//inner anonymous class?
 	
 	if(ownBoard) {
 		for(int i=0; i<ships.size();i++) {
@@ -113,17 +102,19 @@ private void cellAction(Cell source) {
 			}
 	}
 	else {
+		if(isUserTurn()) {
 		int x = source.getRow();
 		int y = source.getCol();
 		
 		String fireMsg = "f," + Integer.toString(x)+","+Integer.toString(y);
 		sendMessage(fireMsg);
+		}
+
 
 	}
 }
 
 private void sendMessage(String msg) {
-
 
 	try {
 		if (sClient!=null && sServer == null) {
@@ -146,13 +137,22 @@ private void sendMessage(String msg) {
 public void handleMiss(int x, int y) {
 	cells[x][y].setBackground(Color.GRAY);
 	cells[x][y].setEnabled(false);
+	setUserTurn(false);
 }
 
 
 public void handleHit(int x, int y) {
 	cells[x][y].setBackground(Color.RED);
 	cells[x][y].setEnabled(false);;
-	
+	setUserTurn(true);
+}
+
+public void setUserTurn(boolean isYourTurn) {
+	this.userTurn = isYourTurn;
+}
+
+private boolean isUserTurn() {
+	return userTurn;
 }
 
 public Cell getCells(int x, int y) {
@@ -176,25 +176,7 @@ private void addCells() {
         for (int col = 0; col < gridSize; col++) {
             cells[row][col] = new Cell(row, col, actionListener);
             grid.add(cells[row][col]);
-//            cells[row][col].addMouseListener(new java.awt.event.MouseAdapter() {		//could probably delete
-//            	Color originalColor = null;
-//            	public void mouseEntered(MouseEvent evt) {
-//            		Cell button = (Cell)evt.getComponent();
-//                	originalColor = button.getBackground();
-//                	
-//                	if(button.getState() == State.NO_SHIP) {
-//                	button.setBackground(Color.DARK_GRAY);
-//                	}
-//                }
-//                public void mouseExited(MouseEvent evt) {
-//                	Cell button = (Cell)evt.getComponent();
-//                	if(button.getState() == State.NO_SHIP) {
-//                		button.setBackground(originalColor);
-//                    	}
-//                	
-//                	
-//                }
-//            });
+
 
             if(!ownBoard) {
 //            	cells[row][col].setEnabled(false);
