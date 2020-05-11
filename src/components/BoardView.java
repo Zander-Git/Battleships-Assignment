@@ -5,8 +5,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +22,6 @@ import sockets.server.SimpleServer;
 public class BoardView extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
-	private int gameMode;
 
 	private int gridSize = 10;
 	Cell[][] cells=new Cell[gridSize][gridSize];	
@@ -64,7 +61,6 @@ private void init(boolean ownBoard, ShipSelectionPanel shipPanel) {
 		addCells();
 		setUserReady(false);
 
-		
 		if (ownBoard) {
 		JButton readyBtn 	= new JButton("Ready?");
 		readyBtn.addActionListener(new ActionListener(){  
@@ -80,7 +76,6 @@ private void init(boolean ownBoard, ShipSelectionPanel shipPanel) {
 	    }
 	    });  
 		this.add(readyBtn);
-		
 		}
 		
 		for (Type shipType : Type.values() ) {
@@ -122,7 +117,6 @@ private void cellAction(Cell source) {
 }
 
 private void sendMessage(String msg) {
-
 	try {
 		if (sClient!=null && sServer == null) {
 			sClient.sendMessageToServer(msg);
@@ -213,13 +207,6 @@ private void addCells() {
         for (int col = 0; col < gridSize; col++) {
             cells[row][col] = new Cell(row, col, actionListener);
             grid.add(cells[row][col]);
-
-
-            if(!ownBoard) {
-//            	cells[row][col].setEnabled(false);
-//            	cells[row][col].setBackground(Color.GRAY);
-            	
-            }
         }
     }
 

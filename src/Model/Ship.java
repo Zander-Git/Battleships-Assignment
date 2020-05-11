@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import components.Cell;
 
-
 public class Ship {
 	
     private Type type;
@@ -95,8 +94,5 @@ public class Ship {
         
     }
 
-
-
-	
 
 }

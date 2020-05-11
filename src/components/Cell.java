@@ -3,7 +3,6 @@ package components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 import javax.swing.JButton;
 
@@ -61,11 +60,6 @@ public class Cell extends JButton {
         return row == cell.row &&
                col == cell.col;
     }
-
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(row, col);
-//    }
     
 	@Override
 	public Dimension getPreferredSize() {

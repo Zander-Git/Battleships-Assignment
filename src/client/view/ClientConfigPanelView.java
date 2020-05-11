@@ -14,8 +14,6 @@ import javax.swing.JTextField;
 
 import sockets.client.SimpleClient;
 
-
-
 public class ClientConfigPanelView extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -68,8 +66,7 @@ public class ClientConfigPanelView extends JPanel{
 			}
 		});
 		
-		
-		
+	
 		this.btnStart.addActionListener(new ActionListener() {
 			
 			@Override

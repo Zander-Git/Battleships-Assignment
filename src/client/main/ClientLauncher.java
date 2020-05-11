@@ -2,7 +2,6 @@ package client.main;
 
 import client.view.ClientMainUi;
 
-
 public class ClientLauncher {
 
 	public static void main(String[] args) {

@@ -16,9 +16,7 @@ public class ClientMainUi {
 	ClientConfigPanelView configPanel;
 	ShipSelectionPanel selectPanel;
 	BoardView myBoard, yourBoard;
-	private int gameMode;
 
-	
 	SimpleClient clientComponent;
 	
 	private static final int SIZE = 500;
@@ -27,7 +25,6 @@ public class ClientMainUi {
 
 		this.clientComponent = new SimpleClient(this);
 
-		
 		frame=new JFrame();	        
 		JPanel rootPanel = new JPanel(new BorderLayout());
 		JPanel leftPanel = new JPanel(new GridLayout(1, 0));
@@ -35,13 +32,10 @@ public class ClientMainUi {
 	
 		selectPanel = new ShipSelectionPanel();
 		configPanel = new ClientConfigPanelView(this.frame, this.clientComponent);
-		
-//		myBoard = new BoardView(false);	
+			
 		myBoard = new BoardView(true, selectPanel, clientComponent);	
 		yourBoard = new BoardView(false, null, clientComponent);
 
-		
-		
 	
 		frame = new JFrame("Battleships");
 		frame.setSize(SIZE, SIZE);
@@ -61,7 +55,6 @@ public class ClientMainUi {
 		this.frame.setContentPane(rootPanel);
 		this.frame.pack();
 		this.frame.setVisible(true);  
-//		SetGameMode(SETUP);
 
 	}
 
@@ -76,10 +69,3 @@ public class ClientMainUi {
 
 
 }
-
-
-
-
-
-
-

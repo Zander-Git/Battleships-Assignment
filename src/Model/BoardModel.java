@@ -1,7 +1,6 @@
 package model;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +67,7 @@ public class BoardModel {
     			}
     			else {
     				JOptionPane.showMessageDialog(boardView,"overlapping",
-    							"overlapping 2" , JOptionPane.ERROR_MESSAGE );
+    							"overlapping" , JOptionPane.ERROR_MESSAGE );
     			}
     	}
     	else {
@@ -78,7 +77,6 @@ public class BoardModel {
     	}
  
     public boolean inBoundry() {
-    // checks if it is within the board
     int end = (shipPlacing.isVertical()) ? posX
             + getShipLength() - 1 : posY + getShipLength() - 1;
     if (posX < 0 || posY < 0 || end >= BOARD_DIMENSION) {
@@ -104,7 +102,6 @@ public class BoardModel {
     }
     
     public boolean isBoardReady() {
-    	//for all ships
     	ships.forEach((shipss) ->{    		
     		int shipCount = 0;
     		setAllPlaced(true);
@@ -170,8 +167,6 @@ public class BoardModel {
     public void colourCellsInView(int x, int y, Color color) {
     	boardView.colorCellFromBoardModel(x, y,color);
     }
-    
-    
     
 }
 

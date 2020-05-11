@@ -54,9 +54,7 @@ public class ServerMainUi implements Observer {
 		myBoard = new BoardView(true, selectPanel, serverComponent);	
 		yourBoard = new BoardView(false, null, serverComponent);
 		yourBoard.setUserTurn(false);
-		
-		
-	
+
 		frame = new JFrame("Battleships");
 		frame.setSize(SIZE, SIZE);
 		frame.setLayout(new BorderLayout());
@@ -94,12 +92,7 @@ public class ServerMainUi implements Observer {
 	public void update() {
 	
 		String receivedMsg = (String) this.observableServer.getUpdate();
-		
-		
-		
-		// display the message where appropriate
-//		this.receivePanel.updateReceiverWindow(receivedMsg);
-		
+			
 	}
 
 	@Override

@@ -16,41 +16,21 @@ import components.Cell;
 import components.Cell.State;
 
 
-
-
-/**
- * Represents a client. 
- * Allows user inputs through keyboard and pass them to the server. 
- * Receives responses from the user. 
- * 
- * @author thanuja
- * @version 20.11.2019
- */
 public class SimpleClient implements Runnable {
 
-	// reference variable for client socket
 	private Socket 					clientSocket;
 
-	// reference variable to store object IO streams, should be used when working with serialized objects.
 	private ObjectOutputStream 		output;
 	private ObjectInputStream 		input;
 
-	// boolean variable to store stopclient flag.
 	private boolean 				stopClient;
 
-	// reference variable for Thread
 	private Thread 					clientReader;
 
-	// variables to store Host IP and port number
 	private String 					host;
 	private int 					port;
 	
 	ClientMainUi		guiClient;
-	
-	private final int SETUP = 0;
-	private final int PLAYING = 1;
-	private final int FINISHED = 2;
-	
 	
 	public SimpleClient(ClientMainUi guiClient) {
 		this.guiClient = guiClient;
@@ -62,24 +42,12 @@ public class SimpleClient implements Runnable {
 		openConnection();
 	}
 	
-	/**
-	 * Constructor, initiates a client, and calls for openConnection.
-	 * @param host
-	 * @param port
-	 * @throws IOException
-	 */
 	public SimpleClient(String host, int port) throws IOException {
 		this.host = host;
 		this.port = port;
 		openConnection();
 	}
 	
-	/**
-	 * opens a connection to the server
-	 * setup Object IO streams for the socket.
-	 * 
-	 * @throws IOException
-	 */
 	public void openConnection() throws IOException {
 
 		// Create the sockets and the data streams
@@ -96,7 +64,7 @@ public class SimpleClient implements Runnable {
 				System.err.println("[client: ] error in opening a connection to: " + this.host + " on port: " + this.port);
 			}
 
-			throw ex; // Rethrow the exception.
+			throw ex; 
 		}
 		
 		// creates a Thread instance and starts the thread.
@@ -106,11 +74,6 @@ public class SimpleClient implements Runnable {
 
 	}
 	
-	/**
-	 * Handles sending a message to server. In this case, it is a String. 
-	 * @param msg
-	 * @throws IOException
-	 */
 	public void sendMessageToServer(String msg) throws IOException {
 		if (this.clientSocket == null || this.output == null)
 			throw new SocketException("socket does not exist");
@@ -119,10 +82,7 @@ public class SimpleClient implements Runnable {
 		
 	}
 	
-	/**
-	 * Handle message from the server. In this case, simply display them. 
-	 * @param msg
-	 */
+
 	public void handleMessageFromServer(String msg) {
         String[] arrOfStr = msg.split(",", 0); 
         String typeOfMessage = arrOfStr[0];
@@ -205,8 +165,6 @@ public class SimpleClient implements Runnable {
 
 
 	}
-
-	
 	
 	/**
 	 * Close all connections
@@ -214,20 +172,16 @@ public class SimpleClient implements Runnable {
 	 */
 	private void closeAll() throws IOException {
 		try {
-			// Close the socket
 			if (this.clientSocket != null)
 				this.clientSocket.close();
 
-			// Close the output stream
 			if (this.output != null)
 				this.output.close();
 
-			// Close the input stream
 			if (this.input != null)
 				this.input.close();
 			
 		} finally {
-			// Set the streams and the sockets to NULL no matter what.
 			this.output = null;
 			this.input = null;
 			this.clientSocket = null;
@@ -254,18 +208,12 @@ public class SimpleClient implements Runnable {
 			System.out.println("[client: ] stopping client...");
 			this.stopClient = true;
 			fromConsole.close();
-			//closeAll();
 		} catch (Exception ex) {
 			System.out.println("[client: ] unexpected error while reading from console!");
 		}
 
 	}
 
-	/**
-	 * Can perform any pre-processing or checking of the user input before sending it to server. 
-	 * 
-	 * @param userResponse
-	 */
 	public void handleUserInput(String userResponse) {
 
 		if (!this.stopClient) {
@@ -293,17 +241,9 @@ public class SimpleClient implements Runnable {
 
 		String msg;
 
-		// Loop waiting for data
-
 		try {
 			while (!this.stopClient) {
-				// Get data from Server and send it to the handler
-				// The thread waits indefinitely at the following
-				// statement until something is received from the server
 				msg = (String) input.readObject();
-
-				// Concrete subclasses do what they want with the
-				// msg by implementing the following method
 				handleMessageFromServer(msg);
 			}
 			
@@ -328,10 +268,9 @@ public class SimpleClient implements Runnable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		// hardcoded server IP and port number. 
-		String ip; // = "127.0.0.1";
-		int port; // = 7777;
+	
+		String ip;
+		int port; 
 		
 		ip = args[0];
 		port = Integer.parseInt(args[1]);

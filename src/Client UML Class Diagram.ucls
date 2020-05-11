@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="client.view.ClientConfigPanelView" project="FreshMVCLearn" 
     file="/FreshMVCLearn/src/client/view/ClientConfigPanelView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="146" y="113"/>    
+    <position height="-1" width="-1" x="141" y="175"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="components.BoardView" project="FreshMVCLearn" 
     file="/FreshMVCLearn/src/components/BoardView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="695" y="770"/>    
+    <position height="-1" width="-1" x="738" y="529"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="components.ShipSelectionPanel" project="FreshMVCLearn" 
     file="/FreshMVCLearn/src/components/ShipSelectionPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="305" y="828"/>    
+    <position height="-1" width="-1" x="367" y="741"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <enumeration id="7" language="java" name="model.Ship.Type" project="FreshMVCLearn" 
     file="/FreshMVCLearn/src/model/Ship.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1279" y="884"/>    
+    <position height="-1" width="-1" x="1225" y="804"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -84,7 +84,7 @@
   </class>  
   <class id="10" language="java" name="sockets.client.SimpleClient" project="FreshMVCLearn" 
     file="/FreshMVCLearn/src/sockets/client/SimpleClient.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="556" y="144"/>    
+    <position height="-1" width="-1" x="442" y="253"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

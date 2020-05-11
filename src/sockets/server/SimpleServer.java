@@ -18,70 +18,41 @@ import observer.Observer;
 import server.view.ServerMainUi;
 
 
-
-/**
- * Class represents a Server component. 
- * 
- * @author thanuja
- * @version 20.11.2019
- */
 public class SimpleServer extends AbstractServerComponent implements Runnable, Observable {
 
-	// reference variable for server socket. 
 	private ServerSocket 			serverSocket;
 
-	// reference variable for ClientHandler for the server. 
 	private ClientManager 			clientHandler;
 
-	// boolean flag to indicate the server stop. 
 	private boolean 				stopServer;
 
-	// reference variabale for the Thread
 	private Thread 					serverListenerThread;
 
-	// reference variable for ThreadGroup when handling multiple clients
 	private ThreadGroup 			clientThreadGroup;
 
-	// variable to store server's port number
 	int port;
 	
-	//reference to the GUI's receiver panel
+	//reference to the GUI
 	ServerMainUi	guiServer;
 	
-	// list of observers interested in this class (Observable)
 	private List<Observer> observers;
 	
-	// boolean flag to indicate if the state of the class has changed.
 	private boolean			changed;
  	
-	
 	private String			receivedMessage;
 	
 
-	/**
-	 * Constructor.
-	 * 
-	 */
 	public SimpleServer() {
 		
 		this.observers = new ArrayList<Observer>();
 		
 		this.stopServer = false;
-		
-		/**
-		 * Initializes the ThreadGroup. 
-		 * Use of a ThreadGroup is easier when handling multiple clients, although it is not a must. 
-		 */
+
 		this.clientThreadGroup = new ThreadGroup("ClientManager threads");
 
 	}
 	
-	/**
-	 * Initializes the server. Takes port number, creates a new serversocket instance. 
-	 * Starts the server's listening thread. 
-	 * @param port
-	 * @throws IOException
-	 */
+
 	public void initializeServer(int port) throws IOException {
 
 		this.port = port;
@@ -106,13 +77,9 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 	 */
 	public synchronized void handleMessagesFromClient(String msg, ClientManager client) {
 
-//		// format the client message before displaying in server's terminal output. 
         String[] arrOfStr = msg.split(",", 0);
-
         String typeOfMessage = arrOfStr[0];
-
         int x = Integer.parseInt(arrOfStr[1]);
-	
         int y = Integer.parseInt(arrOfStr[2]);
   
         Cell cellToCheck = guiServer.getMyBoardView().getCells(x, y);
@@ -123,9 +90,7 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 
             	cellToCheck.setState(State.HIT);
             	guiServer.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.RED);
-
             	String replyMessage = "h," + Integer.toString(x)+","+Integer.toString(y);
-
             	sendMessageToClient(replyMessage, client);
             	guiServer.getEnemyBoardView().setUserTurn(false);
             }
@@ -133,20 +98,18 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 
             	cellToCheck.setState(State.MISSED);
             	guiServer.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.GRAY);
-
             	String replyMessage = "m," + Integer.toString(x)+","+Integer.toString(y);
-
             	sendMessageToClient(replyMessage, client);
             	guiServer.getEnemyBoardView().setUserTurn(true);
             	
             }
           break;
         case "m":
-            // code block
+            // Receive "miss" response
         	guiServer.getEnemyBoardView().handleMiss(x, y);
             break;
           case "h":
-              // code block
+              // Receive "hit" response
         	  guiServer.getEnemyBoardView().handleHit(x, y);
               break;
           case "r":
@@ -169,26 +132,17 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
           	}
               break;
           case "n":
+              // Receive "Not Ready" response
           	JOptionPane.showMessageDialog(guiServer.getMyBoardView(),"Opponent not ready yet :)",
   					"" , JOptionPane.INFORMATION_MESSAGE );
           	break;
           case "g":
+              // Receive "Game Over" response
           	JOptionPane.showMessageDialog(guiServer.getMyBoardView(),"You lost :( Please close the game",
   					"" , JOptionPane.INFORMATION_MESSAGE );
           	break;
       }
 
-	}
-	
-	
-
-	/**
-	 * Handles displaying of messages received from each client. 
-	 * Called from handleMessagesFromClient()
-	 * @param message
-	 */
-	public void display(String message) {
-		System.out.println(">> " + message);
 	}
 	
 	
@@ -245,7 +199,6 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 		for (int i = 0; i < clientThreadList.length; i++) {
 			((ClientManager) clientThreadList[i]).sendMessageToClient(msg);
 		}
-//		guiServer.getBoardView().getCells(x, y);
 		
 	}
 	
@@ -321,7 +274,6 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 
 			ClientManager cm = new ClientManager(this.clientThreadGroup, clientSocket, clientCount, this);
 
-			// new ClientManager(clientSocket, this);
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -388,15 +340,12 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 				try {
 					consoleInput.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}).start();
 		
 
-		
-		
 
 	}
 

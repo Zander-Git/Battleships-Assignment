@@ -49,8 +49,7 @@ public class ShipSelectionPanel extends JPanel{
     	
     	verticalBtn.setText("vertical");
     	horizontalBtn.setText("horizontal");
-    	
-    	
+    	    	
     	airCarrierBtn.setBounds(120, 30, 120, 50); 
       	battleshipBtn.setBounds(250, 30, 80, 50);
       	shipLbl.setBounds(20, 30, 150, 50); 
@@ -64,9 +63,7 @@ public class ShipSelectionPanel extends JPanel{
       	airCarrierBtn.setSelected(true);
       	
       	box2.add(readyBtn);      	
-
-
-      	
+	
       	oriBox.add(horizontalBtn);
       	oriBox.add(verticalBtn);
       	horizontalBtn.setSelected(true);
@@ -81,14 +78,8 @@ public class ShipSelectionPanel extends JPanel{
       	orientaionGroup.add(verticalBtn);
       	
       	this.add(radioBox);
-//      	this.add(box2);
-      	this.add(oriBox);
-      	
-
-    	
+      	this.add(oriBox);  	
     }
-    
-
     
 
 	public void printBtnText() {
@@ -98,7 +89,6 @@ public class ShipSelectionPanel extends JPanel{
     public String getShipSelected() {
         for (Enumeration<AbstractButton> buttons = shipGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
-
             if (button.isSelected()) {
                 return button.getText();
             }
@@ -120,10 +110,7 @@ public class ShipSelectionPanel extends JPanel{
                 }
             }
         }
-		return false; //fix this wierd thing
-
-
-
+		return false;
     }
 
 }
