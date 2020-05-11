@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import components.Cell.State;
@@ -28,10 +29,12 @@ public class BoardView extends JPanel{
 	private int gridSize = 10;
 	Cell[][] cells=new Cell[gridSize][gridSize];	
 	List<Ship> ships = new ArrayList<Ship>();
-	private boolean ownBoard, userTurn;
+	private boolean ownBoard, userTurn, userReady;
 	ShipSelectionPanel shipPanel;
 	BoardModel boardModel;
 	JButton readyBtn;
+	int hits = 0;
+	int maxHits = 0;
 	
 	SimpleClient sClient;
 	SimpleServer sServer;
@@ -59,6 +62,8 @@ private void init(boolean ownBoard, ShipSelectionPanel shipPanel) {
 		this.ownBoard = ownBoard;
 		this.boardModel = new BoardModel(ownBoard, this);
 		addCells();
+		setUserReady(false);
+
 		
 		if (ownBoard) {
 		JButton readyBtn 	= new JButton("Ready?");
@@ -80,13 +85,15 @@ private void init(boolean ownBoard, ShipSelectionPanel shipPanel) {
 		
 		for (Type shipType : Type.values() ) {
 			ships.add(new Ship(shipType));
+			maxHits = maxHits + shipType.getLength();
 		}
 
 	}
 
 protected void startGame() {
+	setUserReady(true);
 	setCellsEnabled(false);
-
+	sendMessage("r,0,0");
 	
 }
 
@@ -103,11 +110,11 @@ private void cellAction(Cell source) {
 	}
 	else {
 		if(isUserTurn()) {
-		int x = source.getRow();
-		int y = source.getCol();
-		
-		String fireMsg = "f," + Integer.toString(x)+","+Integer.toString(y);
-		sendMessage(fireMsg);
+			int x = source.getRow();
+			int y = source.getCol();
+			
+			String fireMsg = "f," + Integer.toString(x)+","+Integer.toString(y);
+			sendMessage(fireMsg);
 		}
 
 
@@ -140,18 +147,48 @@ public void handleMiss(int x, int y) {
 	setUserTurn(false);
 }
 
-
 public void handleHit(int x, int y) {
 	cells[x][y].setBackground(Color.RED);
-	cells[x][y].setEnabled(false);;
+	cells[x][y].setEnabled(false);
 	setUserTurn(true);
+	hits++;
+	if (hits == maxHits ) {
+		gameOver();
+	}
+	
+}
+
+public void gameOver() {
+	String msg = "g,0,0";
+	
+	try {
+		if (sClient!=null && sServer == null) {
+			sClient.sendMessageToServer(msg);
+
+		}
+		else if (sClient==null && sServer != null) {
+			sServer.sendMessageToClient(msg);
+		}
+		else {
+			throw new Exception("Neither client nor server initialised.");
+		}
+	}
+	catch (Exception e){
+		System.out.println(e.toString());
+		System.exit(1);
+	}
+	
+	JOptionPane.showMessageDialog(this,"You Won! Please close the game",
+			"" , JOptionPane.INFORMATION_MESSAGE );
+	setCellsEnabled(false);
+	
 }
 
 public void setUserTurn(boolean isYourTurn) {
 	this.userTurn = isYourTurn;
 }
 
-private boolean isUserTurn() {
+public boolean isUserTurn() {
 	return userTurn;
 }
 
@@ -202,12 +239,12 @@ private void setCellsEnabled(boolean enabled) {
 	} 	
 }
 
-public int getGameMode() {
-	return gameMode;
+public boolean isUserReady() {
+	return userReady;
 }
 
-public void setGameMode(int gameMode) {
-	this.gameMode = gameMode;
+public void setUserReady(boolean userReady) {
+	this.userReady = userReady;
 }
 
 

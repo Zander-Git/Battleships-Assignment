@@ -39,7 +39,7 @@ public class ClientMainUi {
 //		myBoard = new BoardView(false);	
 		myBoard = new BoardView(true, selectPanel, clientComponent);	
 		yourBoard = new BoardView(false, null, clientComponent);
-		yourBoard.setUserTurn(true);
+
 		
 		
 	

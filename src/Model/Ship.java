@@ -89,6 +89,9 @@ public class Ship {
     	public Color getColor() {
     		return shipColor;
     	}
+    	public int getLength() {
+    		return length;
+    	}
         
     }
 

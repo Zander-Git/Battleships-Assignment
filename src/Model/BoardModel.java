@@ -79,8 +79,8 @@ public class BoardModel {
  
     public boolean inBoundry() {
     // checks if it is within the board
-    int end = (shipPlacing.isVertical()) ? posY + getShipLength() - 1 : posX
-            + getShipLength() - 1;
+    int end = (shipPlacing.isVertical()) ? posX
+            + getShipLength() - 1 : posY + getShipLength() - 1;
     if (posX < 0 || posY < 0 || end >= BOARD_DIMENSION) {
         return false;
     }
@@ -91,11 +91,11 @@ public class BoardModel {
     	
         for (int i = 0; i < getShipLength(); i++) {
             if (shipPlacing.isVertical()) {
-                if (cells[posX][posY + i].isShip() && !cells[posX][posY + i].compareShips(shipPlacing))
+                if (cells[posX + i][posY].isShip() && !cells[posX + i][posY].compareShips(shipPlacing))            	
                 	 return false;
                    
             } else {
-                if (cells[posX + i][posY].isShip() && !cells[posX + i][posY].compareShips(shipPlacing))
+            	if (cells[posX][posY + i].isShip() && !cells[posX][posY + i].compareShips(shipPlacing))
                     return false;
             }
             

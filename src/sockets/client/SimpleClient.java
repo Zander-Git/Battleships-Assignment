@@ -9,6 +9,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
+import javax.swing.JOptionPane;
+
 import client.view.ClientMainUi;
 import components.Cell;
 import components.Cell.State;
@@ -122,8 +124,6 @@ public class SimpleClient implements Runnable {
 	 * @param msg
 	 */
 	public void handleMessageFromServer(String msg) {
-//		display(msg);
-		System.out.println(msg);
         String[] arrOfStr = msg.split(",", 0); 
         String typeOfMessage = arrOfStr[0];
         int x = Integer.parseInt(arrOfStr[1]); 
@@ -167,21 +167,45 @@ public class SimpleClient implements Runnable {
             // Receive "hit" response
         	guiClient.getEnemyBoardView().handleHit(x, y);
             break;
-        default:
-          // code block
+        case "r":
+            // Receive "Ready" response
+        	if (guiClient.getMyBoardView().isUserReady()) {
+        		if(!guiClient.getEnemyBoardView().isUserTurn()) {
+        			guiClient.getEnemyBoardView().setUserTurn(true);
+	        		try {
+						sendMessageToServer("r,0,0");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+        		}
+        		else {
+                	JOptionPane.showMessageDialog(guiClient.getMyBoardView(),"Start! :)",
+        					"" , JOptionPane.INFORMATION_MESSAGE );
+        		}
+        	}
+        	else {
+            	JOptionPane.showMessageDialog(guiClient.getMyBoardView(),"Opponent ready :)",
+    					"" , JOptionPane.INFORMATION_MESSAGE );
+        		try {
+					sendMessageToServer("n,0,0");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
+            break;
+        case "n":
+        	JOptionPane.showMessageDialog(guiClient.getMyBoardView(),"Opponent not ready yet :)",
+					"" , JOptionPane.INFORMATION_MESSAGE );
+        	break;
+        case "g":
+        	JOptionPane.showMessageDialog(guiClient.getMyBoardView(),"You lost :( Please close the game",
+					"" , JOptionPane.INFORMATION_MESSAGE );
+        	break;
       }
 
 
 	}
 
-	
-	/**
-	 * Simply display a String message in the terminal. 
-	 * @param message
-	 */
-	public void display(String message) {
-		System.out.println("> ppo " + message);
-	}
 	
 	
 	/**

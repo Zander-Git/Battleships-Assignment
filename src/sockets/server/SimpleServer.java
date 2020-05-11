@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import components.Cell;
 import components.Cell.State;
 import observer.Observable;
@@ -55,19 +57,6 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 	
 	private String			receivedMessage;
 	
-	
-//	public SimpleServer(ServerMainUi gui) {
-//		
-//		this.guiServer = gui;
-//		this.stopServer = false;
-//		
-//		/**
-//		 * Initializes the ThreadGroup. 
-//		 * Use of a ThreadGroup is easier when handling multiple clients, although it is not a must. 
-//		 */
-//		this.clientThreadGroup = new ThreadGroup("ClientManager threads");
-//		
-//	}
 
 	/**
 	 * Constructor.
@@ -118,10 +107,6 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 	public synchronized void handleMessagesFromClient(String msg, ClientManager client) {
 
 //		// format the client message before displaying in server's terminal output. 
-//        String formattedMessage = String.format("[client %d] : %s", client.getClientID(), msg); 
-//        this.receivedMessage = formattedMessage;
-//        this.changed = true;
-
         String[] arrOfStr = msg.split(",", 0);
 
         String typeOfMessage = arrOfStr[0];
@@ -135,8 +120,7 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
         switch(typeOfMessage) {
         case "f":
             if (cellToCheck.getState() == State.CONTAINS_SHIP) {
-//            	System.out.println("hit");
-//            	handleHit();
+
             	cellToCheck.setState(State.HIT);
             	guiServer.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.RED);
 
@@ -146,8 +130,7 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
             	guiServer.getEnemyBoardView().setUserTurn(false);
             }
             else {
-//            	System.out.println("miss");
-//            	handleMiss();
+
             	cellToCheck.setState(State.MISSED);
             	guiServer.getMyBoardView().getBoardModel().colourCellsInView(x, y, Color.GRAY);
 
@@ -166,28 +149,38 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
               // code block
         	  guiServer.getEnemyBoardView().handleHit(x, y);
               break;
-        default:
-          // code block
+          case "r":
+              // Receive "Ready" response
+          	if (guiServer.getMyBoardView().isUserReady()) {
+  	        		try {
+  	        			sendMessageToClient("r,0,0");
+  					} catch (IOException e) {
+  						e.printStackTrace();
+  					}
+          	}
+          	else {
+              	JOptionPane.showMessageDialog(guiServer.getMyBoardView(),"Opponent ready :)",
+      					"" , JOptionPane.INFORMATION_MESSAGE );
+          		try {
+          			sendMessageToClient("n,0,0");
+  				} catch (IOException e) {
+  					e.printStackTrace();
+  				}
+          	}
+              break;
+          case "n":
+          	JOptionPane.showMessageDialog(guiServer.getMyBoardView(),"Opponent not ready yet :)",
+  					"" , JOptionPane.INFORMATION_MESSAGE );
+          	break;
+          case "g":
+          	JOptionPane.showMessageDialog(guiServer.getMyBoardView(),"You lost :( Please close the game",
+  					"" , JOptionPane.INFORMATION_MESSAGE );
+          	break;
       }
 
 	}
 	
 	
-	
-	
-	private void handleMiss() {
-
-		//change colour on my board
-		//send miss response
-		
-	}
-
-	private void handleHit() {
-		//set cell to hit
-		//change color on my board
-		//send hit response
-		
-	}
 
 	/**
 	 * Handles displaying of messages received from each client. 
@@ -224,7 +217,6 @@ public class SimpleServer extends AbstractServerComponent implements Runnable, O
 			}
 		}
 		
-//		System.out.println(msg);
 		
 		
 	}

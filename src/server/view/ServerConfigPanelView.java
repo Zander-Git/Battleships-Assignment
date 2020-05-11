@@ -40,9 +40,8 @@ public class ServerConfigPanelView extends JPanel{
 		
 		this.lblPortNumber = new JLabel("Port number: ");
 		this.txtPortNumber = new JTextField("4444");
-//		
-//		this.lblIPAddress = new JLabel("IP address: ");
-//		this.txtIPAddress = new JTextField(10);
+		
+
 		
 		this.btnClear = new JButton("Clear");
 		this.btnStart = new JButton("Start");
@@ -50,8 +49,7 @@ public class ServerConfigPanelView extends JPanel{
 		
 		this.setLayout(new GridLayout(3, 2, 4, 8));
 		
-//		this.add(this.lblIPAddress, 0);
-//		this.add(this.txtIPAddress, 1);
+
 		this.add(this.lblPortNumber, 0);
 		this.add(this.txtPortNumber, 1);
 		this.add(this.btnClear, 2);
@@ -66,7 +64,6 @@ public class ServerConfigPanelView extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				txtIPAddress.setText("");
 				txtPortNumber.setText("");
 			}
 		});

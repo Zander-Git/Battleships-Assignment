@@ -95,7 +95,6 @@ public class ServerMainUi implements Observer {
 	
 		String receivedMsg = (String) this.observableServer.getUpdate();
 		
-		System.out.println(receivedMsg); //change to send msg to client
 		
 		
 		// display the message where appropriate

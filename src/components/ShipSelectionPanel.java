@@ -1,7 +1,6 @@
 package components;
 
 import java.util.Enumeration;
-
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
